@@ -1,9 +1,13 @@
 <script>
-import BaseComponent from '@/components/BaseComponent.vue';
+import ProductCard from '@/components/ProductCard.vue';
+import NavBar from '@/components/NavBar.vue';
+import SideDrawer from '@/components/SideDrawer.vue';
 
 export default {
   components: {
-    BaseComponent
+    SideDrawer,
+    ProductCard,
+    NavBar,
   },
   data() {
     return {
@@ -15,22 +19,22 @@ export default {
   }
 }
 
+
 </script>
 
 
 <!-- HTML -->
 <template>
-    <header>
-      <h1>My Vue App</h1>
-    </header>
+  <VApp>
+    <NavBar />
+    <v-main>
+      <SideDrawer></SideDrawer>
 
-    <main>
-      <BaseComponent />
-    </main>
+      <!-- cards -->
+      <ProductCard />
+    </v-main>
+  </VApp>
 </template>
 
 <!-- STYLES -->
-<style scoped>
-
-
-</style>
+<style scoped></style>
