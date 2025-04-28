@@ -1,7 +1,7 @@
 <script>
 
 export default {
-  name: 'NavBar',
+  name: 'AppHeader',
   components: {
 
   },
@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      title: 'NavBar',
+      title: 'AppHeader',
     };
   },
   methods: {
