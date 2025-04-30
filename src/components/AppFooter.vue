@@ -21,9 +21,9 @@ export default {
 </script>
 
 <template>
-
-
-
+  <v-footer class="text-center">
+    2025 - Nick Headson
+  </v-footer>
 </template>
 
 <style scoped>

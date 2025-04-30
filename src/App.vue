@@ -58,13 +58,14 @@ export default {
 <!-- HTML -->
 <template>
   <VApp>
-    <NavBar />
     <v-main>
-      <SideDrawer></SideDrawer>
+      <AppHeader />
+      <SideDrawer />
 
       <!-- cards -->
-      <ProductCard />
+      <AppFooter />
     </v-main>
+
   </VApp>
 </template>
 
