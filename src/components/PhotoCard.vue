@@ -1,46 +1,62 @@
 <script>
-const photos = [
-  { title: 'Kevin 1', src: './img/Kevin-1.jpg', flex: 3 },
-  { title: 'Kevin 2', src: './img/Kevin-2.jpg', flex: 3 },
-  { title: 'Kevin 3', src: './img/Kevin-3.jpg', flex: 3 },
-  { title: 'Kevin 4', src: './img/Kevin-4.jpg', flex: 3 },
-  { title: 'Kevin 5', src: './img/Kevin-5.jpg', flex: 3 },
-  { title: 'Kevin 6', src: './img/Kevin-6.jpg', flex: 3 },
-  { title: 'Kevin 7', src: './img/Kevin-7.jpg', flex: 3 },
-  { title: 'Kevin 8', src: './img/Kevin-8.jpg', flex: 3 },
-]
 
 export default {
   name: 'PhotoCard',
-  components: {
-
-  },
+  components: {},
   props: {
-
+    photo: {
+      type: Object,
+      required: true,
+    },
   },
+  computed: {},
   data() {
     return {
       title: 'PhotoCard',
     };
   },
-  methods: {
-
-  }
+  methods: {}
 }
+
 </script>
 
 <template>
-  <v-container>
-    <v-responsive :aspect-ratio="4 / 4" class="border pa-4">
-      <v-img
-        :aspect-ratio="1"
-        class="bg-white"
-        src="Kevin-1.jpg"
-        width="300"
-        cover
-      ></v-img>
-    </v-responsive>
-  </v-container>
+  <v-card
+    class="mx-auto"
+    max-width="500"
+  >
+    <v-img
+      :src="photo.src"
+      class="align-end"
+      gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+      height="200px"
+      cover
+    >
+      <v-card-title class="text-white" v-text="photo.title"></v-card-title>
+    </v-img>
+
+    <v-card-actions>
+      <v-spacer></v-spacer>
+
+      <v-btn
+        color="medium-emphasis"
+        icon="mdi-magnify"
+        size="small"
+      ></v-btn>
+
+      <v-btn
+        color="medium-emphasis"
+        icon="mdi-information-outline"
+        size="small"
+      ></v-btn>
+
+      <v-btn
+        color="medium-emphasis"
+        icon="mdi-bookmark-outline"
+        size="small"
+      ></v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <style scoped>
