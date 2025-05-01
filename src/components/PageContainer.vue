@@ -16,6 +16,14 @@ import GalleryGrid from "@/components/GalleryGrid.vue";
 import GallerySlideshow from "@/components/GallerySlideshow.vue";
 import HomeCarousel from "@/components/HomeCarousel.vue";
 import OrderSummary from "@/components/OrderSummary.vue";
+import Kevin1 from '@/img/Kevin-1.jpg';
+import Kevin2 from '@/img/Kevin-2.jpg';
+import Kevin3 from '@/img/Kevin-3.jpg';
+import Kevin4 from '@/img/Kevin-4.jpg';
+import Kevin5 from '@/img/Kevin-5.jpg';
+import Kevin6 from '@/img/Kevin-6.jpg';
+import Kevin7 from '@/img/Kevin-7.jpg';
+import Kevin8 from '@/img/Kevin-8.jpg';
 
 export default {
   name: 'PageContainer',
@@ -38,24 +46,21 @@ export default {
     SkeletonLoader,
     ViewToggle,
   },
-  props: {},
   data() {
     return {
-      title: 'PageContainer',
       photos: [
-        {title: 'Kevin 1', src: '@/assets/img/Kevin-1.jpg' },
-        {title: 'Kevin 2', src: '@/assets/img/Kevin-2.jpg' },
-        {title: 'Kevin 3', src: '@/assets/img/Kevin-3.jpg' },
-        {title: 'Kevin 4', src: '@/assets/img/Kevin-4.jpg' },
-        {title: 'Kevin 5', src: '@/assets/img/Kevin-5.jpg' },
-        {title: 'Kevin 6', src: '@/assets/img/Kevin-6.jpg' },
-        {title: 'Kevin 7', src: '@/assets/img/Kevin-7.jpg' },
-        {title: 'Kevin 8', src: '@/assets/img/Kevin-8.jpg' },
-      ]
+        { title: 'Kevin 1', src: Kevin1 },
+        { title: 'Kevin 2', src: Kevin2 },
+        { title: 'Kevin 3', src: Kevin3 },
+        { title: 'Kevin 4', src: Kevin4 },
+        { title: 'Kevin 5', src: Kevin5 },
+        { title: 'Kevin 6', src: Kevin6 },
+        { title: 'Kevin 7', src: Kevin7 },
+        { title: 'Kevin 8', src: Kevin8 },
+      ],
     };
   },
-  methods: {}
-}
+};
 </script>
 
 <template>
