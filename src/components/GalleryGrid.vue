@@ -29,9 +29,7 @@ export default {
       <v-col
         v-for="photo in photos"
         :key="photo.title"
-        cols="12"
-        sm="6"
-        md="4"
+        cols="3"
       >
         <PhotoCard :photo="photo" />
       </v-col>

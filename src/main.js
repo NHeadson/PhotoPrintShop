@@ -1,10 +1,10 @@
-import { createApp } from 'vue';
+import {createApp} from 'vue';
 import App from './App.vue';
-import { createVuetify } from 'vuetify';
+import {createVuetify} from 'vuetify';
 import 'vuetify/styles';
-import { aliases, mdi } from 'vuetify/iconsets/mdi';
+import {aliases, mdi} from 'vuetify/iconsets/mdi';
 import '@mdi/font/css/materialdesignicons.css';
-
+import router from '@/router';
 
 const vuetify = createVuetify({
   icons: {
@@ -16,4 +16,4 @@ const vuetify = createVuetify({
   },
 });
 
-createApp(App).use(vuetify).mount('#app');
+createApp(App).use(vuetify).use(router).mount('#app');

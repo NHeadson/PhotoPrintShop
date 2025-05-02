@@ -1,5 +1,4 @@
 <script>
-
 export default {
   name: 'PhotoCard',
   components: {},
@@ -17,19 +16,20 @@ export default {
   },
   methods: {}
 }
-
 </script>
 
 <template>
   <v-card
     class="mx-auto"
     max-width="500"
+    variant="outlined"
   >
     <v-img
       :src="photo.src"
       class="align-end"
       gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
       height="200px"
+      aspect-ratio="4/3"
       cover
     >
       <v-card-title class="text-white" v-text="photo.title"></v-card-title>
@@ -41,19 +41,19 @@ export default {
       <v-btn
         color="medium-emphasis"
         icon="mdi-magnify"
-        size="small"
+        size="medium"
       ></v-btn>
 
       <v-btn
         color="medium-emphasis"
         icon="mdi-information-outline"
-        size="small"
+        size="medium"
       ></v-btn>
 
       <v-btn
         color="medium-emphasis"
         icon="mdi-bookmark-outline"
-        size="small"
+        size="medium"
       ></v-btn>
     </v-card-actions>
   </v-card>
