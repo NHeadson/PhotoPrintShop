@@ -17,9 +17,7 @@ export default {
       title: 'GalleryGrid',
     };
   },
-  methods: {
-
-  }
+  methods: {}
 }
 </script>
 
@@ -28,10 +26,10 @@ export default {
     <v-row>
       <v-col
         v-for="photo in photos"
-        :key="photo.title"
-        cols="3"
+        :key="photo.width"
+        :cols="photo.width.endsWith('-wide') ? 12 : photo.width.includes('double') ? 6 : 3"
       >
-        <PhotoCard :photo="photo" />
+        <PhotoCard :photo="photo"/>
       </v-col>
     </v-row>
   </v-container>

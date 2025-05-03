@@ -1,63 +1,46 @@
 <script>
 export default {
   name: 'PhotoCard',
-  components: {},
   props: {
     photo: {
       type: Object,
       required: true,
     },
   },
-  computed: {},
   data() {
     return {
-      title: 'PhotoCard',
+      isLoading: true,
     };
   },
-  methods: {}
-}
+  mounted() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500);
+  },
+};
 </script>
 
 <template>
   <v-hover v-slot="{ isHovering, props }">
     <v-card
       class="mx-auto"
-      max-width="500"
       variant="outlined"
       v-bind="props"
     >
+      <v-skeleton-loader
+        v-if="isLoading"
+        type="image"
+        height="40vh"
+      />
+
       <v-img
+        v-show="!isLoading"
         :src="photo.src"
-        class="align-end"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-        height="200px"
-        aspect-ratio="4/3"
+        height="40vh"
         cover
       >
-        <v-card-title class="text-white" v-text="photo.title"></v-card-title>
       </v-img>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-
-        <v-btn
-          color="medium-emphasis"
-          icon="mdi-magnify"
-          size="medium"
-        ></v-btn>
-
-        <v-btn
-          color="medium-emphasis"
-          icon="mdi-information-outline"
-          size="medium"
-        ></v-btn>
-
-        <v-btn
-          color="medium-emphasis"
-          icon="mdi-bookmark-outline"
-          size="medium"
-        ></v-btn>
-      </v-card-actions>
       <v-overlay
         :model-value="!!isHovering"
         class="align-center justify-center"

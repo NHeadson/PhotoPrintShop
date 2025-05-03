@@ -8,7 +8,11 @@ export default {
       required: true,
     }
   },
-  computed: {},
+  computed: {
+    filteredPhotos() {
+      return this.photos.filter(photo => !photo.width.endsWith('-wide'));
+    },
+  },
   data() {
     return {
       title: 'HomeCarousel'
@@ -33,7 +37,7 @@ export default {
       hide-delimiter-background
     >
       <v-carousel-item
-        v-for="photo in photos"
+        v-for="photo in filteredPhotos"
         :key="photo.title"
       >
         <v-img

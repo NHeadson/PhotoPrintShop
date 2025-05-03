@@ -17,6 +17,7 @@ export default {
 
 <template>
   <v-container>
+
     <GalleryGrid :photos="photos" />
   </v-container>
 </template>
