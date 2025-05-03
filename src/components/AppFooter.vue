@@ -6,9 +6,11 @@ export default {
 </script>
 
 <template>
-  <v-footer class="text-center justify-center pa-0">
-    2025 - Nick Headson
+  <v-footer color="var(--dark)" class="text-white text-center justify-start pl-15 pa-2">
+    © 2025 - Nick Headson
   </v-footer>
+
+
 </template>
 
 <style scoped>

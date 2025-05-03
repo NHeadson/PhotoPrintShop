@@ -29,7 +29,7 @@ export default {
     <AppHeader/>
     <v-main>
       <v-container
-        class="pa-0 ma-0"
+        class="pb-10 pa-0 ma-0"
         fluid
       >
         <router-view :photos="photos" />

@@ -11,20 +11,21 @@ export default {
   computed: {},
   data() {
     return {
-      title: 'HomeCarousel',
+      title: 'HomeCarousel'
     };
   },
-  methods: {}
-}
+  methods: {},
+};
 </script>
 
 <template>
+
   <v-container
     class="pa-0"
     fluid
   >
     <v-carousel
-      height="790"
+      height="820"
       :show-arrows="false"
       hide-delimiters
       cycle
@@ -41,6 +42,7 @@ export default {
           position="50% 45%"
           cover
         >
+
         </v-img>
       </v-carousel-item>
     </v-carousel>
