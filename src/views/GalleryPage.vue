@@ -2,7 +2,7 @@
 import GalleryGrid from "@/components/GalleryGrid.vue";
 
 export default {
-  name: "GalleryPage",
+  name: 'GalleryPage',
   components: {
     GalleryGrid,
   },

@@ -54,11 +54,11 @@ export default {
               </h2>
               <p class="text-subtitle-1 mb-6">
                 Explore our curated collection of high-quality prints and find the perfect piece
-                to enhance your home or office. Each image is available in multiple sizes.
+                to enhance your home or office. Each image is available in multiple sizes, finishes, and more.
               </p>
               <v-btn color="var(--link)" size="large" @click="goToShop">
-                <v-icon left class="mr-3">mdi-shopping</v-icon>
-                Shop Prints
+                <v-icon left class="mr-3">mdi-image</v-icon>
+                Browse Images
               </v-btn>
             </v-col>
           </v-row>
