@@ -6,10 +6,11 @@ export default {
 </script>
 
 <template>
-  <v-footer color="var(--dark)" class="text-white text-center justify-start pl-15 pa-2">
-    © 2025 - Nick Headson
-  </v-footer>
-
+  <v-container fluid class="pa-0 mt-0">
+    <v-footer color="var(--dark)" class="text-white text-center justify-start pl-15">
+      © 2025 - Nick Headson
+    </v-footer>
+  </v-container>
 
 </template>
 

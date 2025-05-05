@@ -16,6 +16,7 @@ export default {
     <template v-slot:prepend>
       <v-app-bar-nav-icon
         class="ml-4 nav-link"
+        to="/"
       >
         <v-icon
           color="var(--dark)"
