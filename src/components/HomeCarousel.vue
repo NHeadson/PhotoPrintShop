@@ -26,12 +26,11 @@ export default {
 
   <v-container
     class="pa-0 ma-0"
-    width="100vw"
     fluid
   >
     <v-carousel
       class="pa-0 ma-0"
-      height="100%"
+      height="85vh"
       :show-arrows="false"
       hide-delimiters
       cycle
@@ -41,16 +40,13 @@ export default {
       <v-carousel-item
         v-for="photo in filteredPhotos"
         :key="photo.title"
-        width="100%"
       >
         <v-img
-          width="100%"
-          :aspect-ratio="16 / 9"
-          class="ma-0"
+          class="ma-auto"
           :src="photo.src"
+          height="100%"
           position="50% 45%"
           cover
-          eager
         >
 
         </v-img>

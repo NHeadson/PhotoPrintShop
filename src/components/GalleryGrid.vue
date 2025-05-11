@@ -22,7 +22,9 @@ export default {
 </script>
 
 <template>
-  <v-container>
+  <v-container
+  fluid
+  >
     <v-row>
       <v-col
         v-for="photo in photos"

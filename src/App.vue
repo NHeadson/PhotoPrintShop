@@ -38,13 +38,11 @@ export default {
 
 <!-- HTML -->
 <template>
-  <v-app
-    class="mx-0 mt-16 mb-0">
+  <v-app>
     <AppHeader/>
-    <v-main
-      class="ma-0 pa-0">
+    <v-main>
       <v-container
-        class="ma-0 pa-0"
+        class="pa-0 ma-0"
         fluid
       >
         <router-view :photos="photos" />
@@ -55,8 +53,4 @@ export default {
 </template>
 
 <!-- STYLES -->
-<style scoped>
-v-main {
-  height: 100vh;
-}
-</style>
+<style scoped></style>

@@ -17,20 +17,13 @@ export default {
       required: true,
     },
   },
-  methods: {
-    goToShop() {
-      this.$router.push({name: 'GalleryPage'});
-    }
-  },
+  methods: {},
 };
 </script>
 
 <template>
   <v-container
-    width="100vw"
-    height="100vh"
-    class="ma-0 pa-0"
-    style="position: relative;"
+    class="ma-0"
     fluid
   >
     <HomeCarousel :photos="photos"/>
@@ -38,15 +31,16 @@ export default {
     <!-- Modal -->
     <div
       v-if="showModal"
-      class="modal-overlay">
+      class="modal-overlay"
+    >
       <v-container
-        class="mt-3 pa-0"
-        height="100%"
-        fluid>
+        class="mt-16"
+        fluid
+      >
         <v-row
           align="center"
           justify="center"
-          class="cta-banner rounded-lg elevation-5"
+          class="cta-banner pa-5 rounded-lg elevation-5"
           fluid
         >
           <v-col
@@ -61,11 +55,11 @@ export default {
             </h2>
             <p class="text-subtitle-1 mb-6">
               Explore our curated collection of high-quality prints and find the perfect piece
-              to enhance your home or office. Each image is available in multiple sizes, finishes, and more.
+              to enhance your home or office. Each image is available in multiple sizes.
             </p>
-            <v-btn color="var(--link)" size="large" @click="goToShop">
-              <v-icon left class="mr-3">mdi-image</v-icon>
-              Browse Images
+            <v-btn color="var(--link)" size="large" to="/gallery">
+              <v-icon left class="mr-3 v-icon--size-x-large">mdi-image</v-icon>
+              <strong>Browse Images</strong>
             </v-btn>
           </v-col>
         </v-row>
@@ -79,6 +73,8 @@ export default {
   position: relative;
   background: var(--primary);
   color: var(--dark);
+  width: 50%;
+  margin: 4% auto auto auto;
 }
 
 .modal-overlay {
@@ -86,9 +82,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+  height: 100%;
   justify-content: center;
   align-items: center;
   z-index: 10;
