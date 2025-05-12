@@ -1,4 +1,5 @@
-import {createApp} from 'vue';
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import App from './App.vue';
 import {createVuetify} from 'vuetify';
 import 'vuetify/styles';
@@ -9,7 +10,7 @@ import router from '@/router';
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { useUserStore } from '@/stores/userStore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -25,6 +26,9 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 export { app, db, auth };
+const pinia = createPinia();
+const userStore = useUserStore(pinia);
+userStore.monitorAuthState();
 
 const vuetify = createVuetify({
   icons: {
@@ -36,4 +40,4 @@ const vuetify = createVuetify({
   },
 });
 
-createApp(App).use(vuetify).use(router).mount('#app');
+createApp(App).use(pinia).use(vuetify).use(router).mount('#app');

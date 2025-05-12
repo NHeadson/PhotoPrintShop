@@ -1,18 +1,150 @@
 <script>
+import {useUserStore} from "@/stores/userStore";
 import RegisterLogInForm from "@/components/RegisterLogInForm.vue";
+import EditAccountForm from "@/components/EditAccountForm.vue";
 
 export default {
   name: "AccountPage",
-  components: {RegisterLogInForm}
-}
+  components: {RegisterLogInForm, EditAccountForm},
+  data() {
+    return {
+      showEditModal: false,
+    }
+  },
+  computed: {
+    userStore() {
+      return useUserStore();
+    },
+    role() {
+      return this.userStore.role;
+    },
+    isLoggedIn() {
+      return this.userStore.isLoggedIn;
+    },
+  },
+  methods: {
+    addShippingAddress() {
+      // Logic for adding a shipping address
+      console.log("Add Shipping Address clicked");
+    },
+    viewOrderHistory() {
+      // Logic for viewing order history
+      console.log("View Order History clicked");
+    },
+    openEditModal() {
+      this.showEditModal = true;
+    },
+    closeEditModal() {
+      this.showEditModal = false;
+    },
+  },
+};
 </script>
 
 <template>
 
-  <RegisterLogInForm />
+  <RegisterLogInForm v-if="!isLoggedIn"/>
 
+  <v-container
+    v-else
+    class="mt-4"
+    fluid
+  >
+    <!-- Top Row/Account Info -->
+    <v-row class="mb-3 justify-center">
+      <v-col cols="5">
+        <v-card
+          class="text-color pa-0"
+          color="var(--light)"
+          height="30vh"
+        >
+          <v-card-title class="ml-3 mr-16">Account Details</v-card-title>
+          <v-card-text class="ml-8 mb-0 pb-0">Welcome, {{ userStore.profile?.firstName || "User" }}!</v-card-text>
+          <v-container width="25vw" class="mt-4 pa-0 ma-0">
+            <v-table class="mx-10 px-15 bg-light">
+              <tbody>
+              <tr>
+                <td><strong>Name:</strong><br> {{ (userStore.profile?.firstName) + ' ' + (userStore.profile?.lastName) }}
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Email:</strong><br> {{ userStore.profile?.email }}</td>
+              </tr>
+              <tr>
+                <td><strong>Shipping Address:</strong><br> {{ userStore.profile?.shippingAddress || 'No Address Saved.' }}
+                </td>
+              </tr>
+              </tbody>
+            </v-table>
+          </v-container>
+          <v-container class="pa-0">
+            <v-btn color="var(--link)" size="small" class="text-color-dark float-right mr-5" @click="openEditModal">
+              Edit Details
+            </v-btn>
+          </v-container>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- Bottom Row -->
+
+    <!-- Customer-specific options -->
+    <v-container
+      v-if="role === 'customer'"
+      max-width="100vw"
+      fluid
+      class="ma-0 pa-0"
+    >
+      <v-row class="justify-center">
+        <v-col cols="8">
+          <v-card
+            class="text-color"
+            color="var(--light)"
+            height="50vh"
+          >
+            <v-card-title class="text-color">Customer Options</v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- Admin-specific options -->
+    <v-container v-else>
+      <v-row>
+        <v-col
+          cols="12"
+        >
+          <v-card
+            class="text-color"
+            color="var(--light)"
+          >
+            <v-card-title class="text-color">Admin Options</v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- Edit Account Modal -->
+    <v-dialog v-model="showEditModal" max-width="600px">
+      <v-card class="bg-light text-color">
+        <EditAccountForm/>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="var(--link)" text @click="closeEditModal">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+  </v-container>
 </template>
 
 <style scoped>
+.text-color {
+  color: var(--dark);
+}
+
+.bg-light {
+  background-color: var(--light);
+}
 
 </style>

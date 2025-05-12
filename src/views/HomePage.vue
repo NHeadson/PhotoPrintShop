@@ -57,7 +57,7 @@ export default {
               Explore our curated collection of high-quality prints and find the perfect piece
               to enhance your home or office. Each image is available in multiple sizes.
             </p>
-            <v-btn color="var(--link)" size="large" to="/gallery">
+            <v-btn class="nav-link" color="var(--link)" size="large" to="/gallery">
               <v-icon left class="mr-3 v-icon--size-x-large">mdi-image</v-icon>
               <strong>Browse Images</strong>
             </v-btn>
