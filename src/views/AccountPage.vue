@@ -109,14 +109,19 @@ export default {
     </v-container>
 
     <!-- Admin-specific options -->
-    <v-container v-else>
-      <v-row>
+    <v-container
+      v-else
+      max-width="100vw"
+      fluid
+      class="ma-0 pa-0">
+      <v-row class="justify-center">
         <v-col
-          cols="12"
+          cols="8"
         >
           <v-card
             class="text-color"
             color="var(--light)"
+            height="50vh"
           >
             <v-card-title class="text-color">Admin Options</v-card-title>
           </v-card>

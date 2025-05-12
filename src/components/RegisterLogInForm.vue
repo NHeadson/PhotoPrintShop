@@ -19,7 +19,7 @@ export default {
       show2: false,
       rules: {
         required: (value) => !!value || "Required.",
-        min: (v) => v.length >= 8 || "Min 8 characters. At least one uppercase, one lowercase, and one number required.",
+        min: (v) => v.length >= 8 || "Min 8 characters.",
       },
     }
   },
@@ -146,12 +146,12 @@ export default {
       <v-card-actions
         class="d-block pt-0 text-right"
       >
-        <v-btn color="var(--link)" size="small" class="mb-3 mr-2" @click="toggleForm">
+        <v-btn color="var(--dark)" size="small" class="mb-3 mr-2" @click="toggleForm">
           Already Have an Account?
           <v-icon icon="mdi-chevron-right" end></v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="var(--link)" size="large" @click="registerUser">
+        <v-btn color="var(--dark)" size="large" @click="registerUser">
           Complete Registration
           <v-icon icon="mdi-chevron-right" end></v-icon>
         </v-btn>
@@ -194,15 +194,23 @@ export default {
       </v-container>
       <v-divider></v-divider>
       <v-card-actions
-        class="d-block pt-0 text-right"
+        class="d-block pt-0 pb-5 text-right"
       >
-        <v-btn color="var(--link)" size="small" class="mb-3 mr-2" @click="toggleForm">
+        <v-btn
+          color="var(--link)"
+          size="small"
+          class="mt-5 mb-3 mr-2 pa-1"
+          @click="toggleForm">
           Sign Up Now
           <v-icon icon="mdi-chevron-right" end></v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          color="var(--link)" size="large" @click="loginUser"
+          color="var(--link)"
+          style="outline: 2px solid var(--link);"
+          size="large"
+          class="pa-5 align-content-center log-in"
+          @click="loginUser"
         >
           Log In
           <v-icon icon="mdi-chevron-right" end></v-icon>
@@ -216,6 +224,10 @@ export default {
 
 .text-color {
   color: var(--dark);
+}
+
+.log-in:hover {
+  background-color: var(--light);
 }
 
 </style>
