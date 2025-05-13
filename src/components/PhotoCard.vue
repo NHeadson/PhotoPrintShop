@@ -1,4 +1,8 @@
 <script>
+import { db } from "@/main.js";
+import { collection, addDoc } from "firebase/firestore";
+import { useUserStore } from "@/stores/userStore";
+
 export default {
   name: 'PhotoCard',
   props: {
@@ -12,13 +16,64 @@ export default {
       isLoading: true,
       showModal: false,
       printOptions: {
-        size: '',
+        dimensions: '',
         medium: '',
         finish: '',
         frame: '',
-        price: 0,
+      },
+      basePrice: 20.00,
+      rules: {
+        required: (value) => !!value || "This field is required.",
       },
     };
+  },
+  computed: {
+    formattedPrice() {
+      let price = this.basePrice;
+
+      // Size Options
+      if (this.printOptions.dimensions === '16x20 +$15') price += 15.00;
+      if (this.printOptions.dimensions === '24x36 +$30') price += 30.00;
+
+      // Print Medium Options
+      if (this.printOptions.medium === 'Professional Paper +$15') price += 15.00;
+      if (this.printOptions.medium === 'Canvas +$35') price += 35.00;
+
+      // Finish Options
+      if (this.printOptions.finish === 'Semi-Gloss +$4.50') price += 4.50;
+      if (this.printOptions.finish === 'Matte +$7') price += 7.00;
+
+      if (this.printOptions.frame === 'Black Frame +$20' || this.printOptions.frame === 'White Frame +$20') price += 20.00;
+
+      return `$${price.toFixed(2)}`;
+    },
+  },
+  methods: {
+    async handleAddToCart() {
+      const userStore = useUserStore();
+      const userId = userStore.userUID;
+
+      if (!userId) {
+        alert("You must be logged in to add items to the cart.");
+        return;
+      }
+
+      try {
+        const cartItem = {
+          photoId: this.photo.id,
+          options: this.printOptions,
+          price: this.printOptions.price,
+          addedAt: new Date(),
+        };
+        const cartRef = collection(db, "users", userId, "cart");
+        const docRef = await addDoc(cartRef, cartItem);
+        console.log("Cart item added with ID: ", docRef.id);
+        alert("Item added to cart successfully!");
+      } catch (error) {
+        console.error("Failed to add item to cart:", error);
+        alert("Failed to add item to cart.", error);
+      }
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -71,39 +126,42 @@ export default {
       ></v-img>
 
       <!-- Print Options Menu -->
-      <v-container class="pa-8 align-self-center menu-bg" width="20%">
+      <v-container class="pa-8 align-self-center menu-bg" width="30%">
         <h3>Print Options</h3>
         <v-select
-          v-model="printOptions.size"
-          :items="['Small', 'Medium', 'Large']"
-          label="Size"
+          v-model="printOptions.dimensions"
+          :items="['8x10', '16x20 +$15', '24x36 +$30']"
+          label="Dimensions"
+          :rules="[rules.required]"
           outlined
         ></v-select>
         <v-select
           v-model="printOptions.medium"
-          :items="['Paper', 'Canvas', 'Metal']"
-          label="Medium"
+          :items="['Canvas +$35', 'Standard Paper', 'Professional Paper +$15']"
+          label="Select Medium"
+          :rules="[rules.required]"
+          placeholder="Choose a medium"
           outlined
         ></v-select>
         <v-select
           v-model="printOptions.finish"
-          :items="['Matte', 'Glossy']"
-          label="Finish"
+          :items="['Matte +$7', 'Semi-Gloss +$4.50', 'High-Gloss']"
+          label="Select Finish"
+          :rules="[rules.required]"
+          placeholder="Choose a finish"
           outlined
         ></v-select>
         <v-select
           v-model="printOptions.frame"
-          :items="['No Frame', 'Black Frame', 'White Frame']"
-          label="Frame"
+          :items="['No Frame', 'Black Frame +$20', 'White Frame +$20']"
+          label="Select Frame"
+          :rules="[rules.required]"
+          placeholder="Choose a frame"
           outlined
+          :disabled="printOptions.medium === 'Canvas +$35'"
         ></v-select>
-        <v-text-field
-          v-model="printOptions.price"
-          label="Price"
-          outlined
-          readonly
-        ></v-text-field>
-        <v-btn color="var(--link)" class="mt-4">Add to Cart</v-btn>
+        <p class="mt-4"><strong>Price:</strong> {{ formattedPrice }}</p>
+        <v-btn color="var(--link)" class="mt-4" @click="handleAddToCart">Add to Cart</v-btn>
       </v-container>
     </v-card>
   </v-dialog>

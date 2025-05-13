@@ -2,13 +2,17 @@
 import {useUserStore} from "@/stores/userStore";
 import RegisterLogInForm from "@/components/RegisterLogInForm.vue";
 import EditAccountForm from "@/components/EditAccountForm.vue";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/main.js";
+import AddPhotoForm from "@/components/AddPhotoForm.vue";
 
 export default {
   name: "AccountPage",
-  components: {RegisterLogInForm, EditAccountForm},
+  components: {AddPhotoForm, RegisterLogInForm, EditAccountForm},
   data() {
     return {
       showEditModal: false,
+      orders: [],
     }
   },
   computed: {
@@ -23,9 +27,17 @@ export default {
     },
   },
   methods: {
-    viewOrderHistory() {
-      // Logic for viewing order history
-      console.log("View Order History clicked");
+    async viewOrderHistory() {
+      const userStore = useUserStore();
+      const userId = userStore.userUID;
+
+      if (userId) {
+        const ordersRef = collection(db, "orders");
+        const querySnapshot = await getDocs(ordersRef);
+        this.orders = querySnapshot.docs
+          .map((doc) => doc.data())
+          .filter((order) => order.userId === userId);
+      }
     },
     openEditModal() {
       this.showEditModal = true;
@@ -97,6 +109,11 @@ export default {
             height="50vh"
           >
             <v-card-title class="text-color">Customer Options</v-card-title>
+            <v-btn @click="viewOrderHistory">View Order History</v-btn>
+            <v-container v-for="order in orders" :key="order.id">
+              <p>Order ID: {{ order.id }}</p>
+              <p>Total: {{ order.totalAmount }}</p>
+            </v-container>
           </v-card>
         </v-col>
       </v-row>
@@ -117,6 +134,9 @@ export default {
             height="50vh"
           >
             <v-card-title class="text-color">Admin Options</v-card-title>
+
+            <AddPhotoForm />
+
           </v-card>
         </v-col>
       </v-row>

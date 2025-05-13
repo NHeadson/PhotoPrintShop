@@ -146,12 +146,16 @@ export default {
       <v-card-actions
         class="d-block pt-0 text-right"
       >
-        <v-btn color="var(--dark)" size="small" class="mb-3 mr-2" @click="toggleForm">
+        <v-btn color="var(--link)" size="small" class="mb-3 mr-2" @click="toggleForm">
           Already Have an Account?
           <v-icon icon="mdi-chevron-right" end></v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="var(--dark)" size="large" @click="registerUser">
+        <v-btn
+          color="var(--link)"
+          style="outline: 2px solid var(--link);"
+          size="large"
+          @click="registerUser">
           Complete Registration
           <v-icon icon="mdi-chevron-right" end></v-icon>
         </v-btn>
