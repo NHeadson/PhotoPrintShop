@@ -1,7 +1,7 @@
 <script>
-import { db } from "@/main.js";
-import { collection, addDoc } from "firebase/firestore";
-import { useUserStore } from "@/stores/userStore";
+import {db} from "@/main.js";
+import {collection, addDoc} from "firebase/firestore";
+import {useUserStore} from "@/stores/userStore";
 
 export default {
   name: 'PhotoCard',
@@ -62,7 +62,7 @@ export default {
         const cartItem = {
           photoId: this.photo.id,
           options: this.printOptions,
-          price: this.printOptions.price,
+          price: parseFloat(this.formattedPrice), // Use the computed price
           addedAt: new Date(),
         };
         const cartRef = collection(db, "users", userId, "cart");
@@ -71,7 +71,7 @@ export default {
         alert("Item added to cart successfully!");
       } catch (error) {
         console.error("Failed to add item to cart:", error);
-        alert("Failed to add item to cart.", error);
+        alert("Failed to add item to cart.");
       }
     },
   },

@@ -1,27 +1,22 @@
 <script>
 import GalleryGrid from "@/components/GalleryGrid.vue";
-import { fetchPhotos } from "@/factories/PhotoFactory.js";
 
 export default {
-  name: 'GalleryPage',
+  name: "GalleryPage",
   components: {
     GalleryGrid,
   },
-  data() {
-    return {
-      photos: [],
-    };
-  },
-  async created() {
-    this.photos = await fetchPhotos();
+  props: {
+    photos: {
+      type: Array,
+      required: true,
+    },
   },
 };
 </script>
 
 <template>
-  <v-container
-    fluid
-  >
+  <v-container fluid>
     <GalleryGrid :photos="photos" />
   </v-container>
 </template>

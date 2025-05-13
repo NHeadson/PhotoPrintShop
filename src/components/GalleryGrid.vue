@@ -12,13 +12,7 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      title: 'GalleryGrid',
-    };
-  },
-  methods: {}
-}
+};
 </script>
 
 <template>
@@ -28,8 +22,12 @@ export default {
     <v-row>
       <v-col
         v-for="photo in photos"
-        :key="photo.width"
-        :cols="photo.width.endsWith('-wide') ? 12 : photo.width.includes('double') ? 6 : 3"
+        :key="photo.id"
+        :cols="photo.width && typeof photo.width === 'string' && photo.width.endsWith('-wide')
+          ? 12
+          : photo.width && typeof photo.width === 'string' && photo.width.includes('double')
+          ? 6
+          : 3"
       >
         <PhotoCard :photo="photo"/>
       </v-col>

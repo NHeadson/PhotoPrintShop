@@ -4,11 +4,10 @@ import RegisterLogInForm from "@/components/RegisterLogInForm.vue";
 import EditAccountForm from "@/components/EditAccountForm.vue";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/main.js";
-import AddPhotoForm from "@/components/AddPhotoForm.vue";
 
 export default {
   name: "AccountPage",
-  components: {AddPhotoForm, RegisterLogInForm, EditAccountForm},
+  components: {RegisterLogInForm, EditAccountForm},
   data() {
     return {
       showEditModal: false,
@@ -134,9 +133,6 @@ export default {
             height="50vh"
           >
             <v-card-title class="text-color">Admin Options</v-card-title>
-
-            <AddPhotoForm />
-
           </v-card>
         </v-col>
       </v-row>

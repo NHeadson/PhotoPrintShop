@@ -1,29 +1,20 @@
 import PhotoModel from "@/models/PhotoModel.js";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/main.js";
 
-const createPhotoModel = (data, id) => {
-  if (!data) return null;
+export async function fetchPhotos() {
+  try {
+    // Simulate fetching photos from an API or database
+    const response = await fetch("https://example.com/api/photos");
+    const photos = await response.json();
 
-  const photoId = id || data.id;
-
-  return new PhotoModel(
-    photoId,
-    data.title,
-    data.imageUrl,
-    data.description,
-    data.availableOptions
-  );
-};
-
-const fetchPhotos = async () => {
-  const photos = [];
-  const querySnapshot = await getDocs(collection(db, "photos"));
-  querySnapshot.forEach(doc => {
-    const photoData = doc.data();
-    photos.push(createPhotoModel(photoData, doc.id));
-  });
-  return photos;
-};
-
-export { createPhotoModel, fetchPhotos };
+    // Ensure all required fields are present
+    return photos.map((photo) => {
+      if (!photo.id || !photo.title || !photo.imageUrl || !photo.description) {
+        throw new Error("Photo ID, title, image URL, and description are required.");
+      }
+      return new PhotoModel(photo);
+    });
+  } catch (error) {
+    console.error("Error fetching photos:", error);
+    throw error;
+  }
+}
