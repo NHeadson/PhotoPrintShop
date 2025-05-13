@@ -1,7 +1,7 @@
 <script>
-import { auth, db } from "@/main.js";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import {auth, db} from "@/main.js";
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
+import {doc, setDoc} from "firebase/firestore";
 import createUserModel from "@/factories/UserFactory";
 import {useUserStore} from "@/stores/userStore.js";
 
@@ -71,7 +71,7 @@ export default {
 
         const userStore = useUserStore();
         userStore.monitorAuthState();
-      }catch (error) {
+      } catch (error) {
         console.error("Error logging in user: ", error);
         alert("Login failed: " + error.message);
       }

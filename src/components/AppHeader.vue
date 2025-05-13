@@ -39,7 +39,7 @@ export default {
           <v-icon
             color="var(--dark)"
             icon="mdi-camera"
-            size="x-large"
+            size="large"
           ></v-icon>
         </v-app-bar-nav-icon>
       </template>
@@ -64,7 +64,7 @@ export default {
           <v-icon
             color="var(--dark)"
             icon="mdi-camera"
-            size="x-large"
+            size="large"
           ></v-icon>
         </v-app-bar-nav-icon>
       </template>

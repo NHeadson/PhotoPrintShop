@@ -31,24 +31,23 @@ export default {
     <!-- Modal -->
     <div
       v-if="showModal"
-      class="modal-overlay"
+      class="modal-overlay mt-16"
     >
       <v-container
         class="mt-16"
+        width="50vw"
         fluid
       >
         <v-row
           align="center"
           justify="center"
-          class="cta-banner pa-5 rounded-lg elevation-5"
+          class="cta-banner py-3 rounded-lg elevation-5 mt-16"
           fluid
         >
           <v-col
-            cols="12"
-            md="8"
+            cols="10"
             height="95%"
-            width="100vw"
-            class="d-flex flex-column justify-center align-center text-center pa-0"
+            class="d-flex flex-column justify-center align-center text-center pa-3"
           >
             <h2 class="text-h4 font-weight-bold mb-4">
               Bring Stunning Photography to Your Walls

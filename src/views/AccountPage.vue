@@ -23,10 +23,6 @@ export default {
     },
   },
   methods: {
-    addShippingAddress() {
-      // Logic for adding a shipping address
-      console.log("Add Shipping Address clicked");
-    },
     viewOrderHistory() {
       // Logic for viewing order history
       console.log("View Order History clicked");
@@ -86,8 +82,6 @@ export default {
       </v-col>
     </v-row>
 
-    <!-- Bottom Row -->
-
     <!-- Customer-specific options -->
     <v-container
       v-if="role === 'customer'"
@@ -107,7 +101,6 @@ export default {
         </v-col>
       </v-row>
     </v-container>
-
     <!-- Admin-specific options -->
     <v-container
       v-else
