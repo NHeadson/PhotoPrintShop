@@ -61,10 +61,11 @@ export default {
   <v-container>
     <h1>Your Cart</h1>
     <template v-if="!showCheckoutForm">
-      <Cart :cartItems="cartItems" @remove-item="removeCartItem"/>
-      <div class="text-right mt-4" v-if="cartItems.length > 0">
+      <Cart :cartItems="cartItems" :photos="$root.$data.photos" @remove-item="removeCartItem" />
+      <div class="text-right mt-2" v-if="cartItems.length > 0">
         <v-btn
-          color="primary"
+          class="mt-0 mr-10"
+          color="var(--link)"
           large
           @click="proceedToCheckout"
         >

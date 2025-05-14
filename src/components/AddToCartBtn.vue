@@ -29,6 +29,10 @@ export default {
       try {
         const cartRef = collection(db, "users", userId, "cart");
         await addDoc(cartRef, cartItem);
+
+        // Fetch updated cart items
+        await userStore.fetchCartItems();
+
         alert("Item added to cart!");
       } catch (error) {
         console.error("Error adding to cart:", error);

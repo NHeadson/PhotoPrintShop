@@ -33,20 +33,20 @@ export default {
       let price = this.basePrice;
 
       // Size Options
-      if (this.printOptions.dimensions === "16x20") price += 15.0;
-      if (this.printOptions.dimensions === "24x36") price += 30.0;
+      if (this.printOptions.dimensions === "16x20 (+$15)") price += 15.0;
+      if (this.printOptions.dimensions === "24x36 (+$30)") price += 30.0;
 
       // Print Medium Options
-      if (this.printOptions.medium === "Professional Paper") price += 15.0;
-      if (this.printOptions.medium === "Canvas") price += 35.0;
+      if (this.printOptions.medium === "Professional Paper (+$15)") price += 15.0;
+      if (this.printOptions.medium === "Canvas (+$35)") price += 35.0;
 
       // Finish Options
-      if (this.printOptions.finish === "Semi-Gloss") price += 4.5;
-      if (this.printOptions.finish === "Matte") price += 7.0;
+      if (this.printOptions.finish === "Semi-Gloss (+$4.50)") price += 4.5;
+      if (this.printOptions.finish === "Matte (+$7)") price += 7.0;
 
       if (
-        this.printOptions.frame === "Black Frame" ||
-        this.printOptions.frame === "White Frame"
+        this.printOptions.frame === "Black Frame (+$20)" ||
+        this.printOptions.frame === "White Frame (+$20)"
       )
         price += 20.0;
 
@@ -69,14 +69,17 @@ export default {
       try {
         const cartItem = {
           photoId: this.photo.id,
+          photoUrl: this.photo.src, // Ensure this is set
           options: this.printOptions,
-          price: this.price, // Use numeric price
+          price: this.price,
           addedAt: new Date(),
         };
         const cartRef = collection(db, "users", userId, "cart");
         const docRef = await addDoc(cartRef, cartItem);
         console.log("Cart item added with ID: ", docRef.id);
         alert("Item added to cart successfully!");
+        this.showModal = false;
+        window.location.reload();
       } catch (error) {
         console.error("Failed to add item to cart:", error);
         alert("Failed to add item to cart.");
@@ -111,7 +114,7 @@ export default {
         @click="showModal = true"
         contained
       >
-        <v-btn variant="flat">View Full Image</v-btn>
+        <v-btn variant="flat" color="var(--link)">View Full Image</v-btn>
       </v-overlay>
     </v-card>
   </v-hover>
@@ -119,6 +122,11 @@ export default {
   <!-- Modal -->
   <v-dialog v-model="showModal" max-width="80vw" class="modal-bg">
     <v-card class="d-flex flex-row card-bg" height="80vh">
+      <v-btn
+        color="var(--light)"
+        class="mr-3"
+        icon="mdi-close"
+        @click="showModal = false"></v-btn>
       <!-- Full Image -->
       <v-img :src="photo.src" class="flex-grow-1 px-0 mx-0"></v-img>
 
@@ -127,14 +135,14 @@ export default {
         <h3>Print Options</h3>
         <v-select
           v-model="printOptions.dimensions"
-          :items="['8x10', '16x20', '24x36']"
+          :items="['8x10', '16x20 (+$15)', '24x36 (+$30)']"
           label="Dimensions"
           :rules="[rules.required]"
           outlined
         ></v-select>
         <v-select
           v-model="printOptions.medium"
-          :items="['Canvas', 'Standard Paper', 'Professional Paper']"
+          :items="['Canvas (+$35)', 'Standard Paper', 'Professional Paper (+$15)']"
           label="Select Medium"
           :rules="[rules.required]"
           placeholder="Choose a medium"
@@ -142,7 +150,7 @@ export default {
         ></v-select>
         <v-select
           v-model="printOptions.finish"
-          :items="['Matte', 'Semi-Gloss', 'High-Gloss']"
+          :items="['Matte (+$7)', 'Semi-Gloss (+$4.50)', 'High-Gloss']"
           label="Select Finish"
           :rules="[rules.required]"
           placeholder="Choose a finish"
@@ -150,7 +158,7 @@ export default {
         ></v-select>
         <v-select
           v-model="printOptions.frame"
-          :items="['No Frame', 'Black Frame', 'White Frame']"
+          :items="['No Frame', 'Black Frame (+$20)', 'White Frame (+$20)']"
           label="Select Frame"
           :rules="[rules.required]"
           placeholder="Choose a frame"

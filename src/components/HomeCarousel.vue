@@ -23,7 +23,7 @@ export default {
   >
     <v-carousel
       class="pa-0 ma-0"
-      height="80vh"
+      height="85vh"
       :show-arrows="false"
       hide-delimiters
       cycle

@@ -34,8 +34,15 @@ export default {
         const ordersRef = collection(db, "orders");
         const querySnapshot = await getDocs(ordersRef);
         this.orders = querySnapshot.docs
-          .map((doc) => doc.data())
-          .filter((order) => order.userId === userId);
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .filter((order) => order.userId === userId)
+          .map((order) => ({
+            ...order,
+            items: order.items.map((item) => ({
+              ...item,
+              photoUrl: this.$root.$data.photos.find((p) => p.id === item.photoId)?.src || null,
+            })),
+          }));
       }
     },
     openEditModal() {
@@ -114,9 +121,17 @@ export default {
           >
             <v-card-title class="text-color">Customer Options</v-card-title>
             <v-btn class="ml-7" @click="viewOrderHistory">View Order History</v-btn>
-            <v-container v-for="order in orders" :key="order.id">
-              <p>Order ID: {{ order.id }}</p>
-              <p>Total: {{ order.totalAmount }}</p>
+            <v-container v-for="order in orders" :key="order.id" class="mb-4" width="95%">
+              <v-card>
+                <v-card-title>
+                  Order Date: {{ new Date(order.orderDate).toLocaleString() }}
+                </v-card-title>
+                <v-card-text>
+                  <p><strong>Quantity:</strong> {{ order.items.reduce((sum, item) => sum + item.quantity, 0) }}</p>
+                  <p><strong>Total Amount:</strong> ${{ order.totalAmount.toFixed(2) }}</p>
+                  <p><strong>Shipping Address:</strong> {{ order.shippingAddress }}</p>
+                </v-card-text>
+              </v-card>
             </v-container>
           </v-card>
         </v-col>
@@ -127,21 +142,30 @@ export default {
       v-else
       max-width="100vw"
       fluid
-      class="ma-0 pa-0">
+      class="ma-0 pa-0"
+    >
       <v-row class="justify-center">
-        <v-col
-          cols="8"
-        >
+        <v-col cols="6">
           <v-card
             class="text-color"
             color="var(--light)"
             height="50vh"
           >
-            <v-card-title class="text-color">Admin Options</v-card-title>
-            <v-btn class="ml-7" @click="viewOrderHistory">View Employee's Order History</v-btn>
-            <v-container v-for="order in orders" :key="order.id">
-              <p>Order ID: {{ order.id }}</p>
-              <p>Total: {{ order.totalAmount }}</p>
+            <v-card-title class="text-color">Customer Options</v-card-title>
+            <v-btn color="var(--link)" class="ml-7" @click="viewOrderHistory">View Order History</v-btn>
+            <v-container
+              class="order-history-container"
+              style="max-height: 400px; overflow-y: auto;"
+            >
+              <v-container v-for="order in orders" :key="order.id" class="mb-4" width="30vw">
+                <v-card class="bg-light">
+                  <v-card-text>
+                    <p><strong>Quantity:</strong> {{ order.items.reduce((sum, item) => sum + item.quantity, 0) }}</p>
+                    <p><strong>Total Amount:</strong> ${{ order.totalAmount.toFixed(2) }}</p>
+                    <p><strong>Shipping Address:</strong> {{ order.shippingAddress }}</p>
+                  </v-card-text>
+                </v-card>
+              </v-container>
             </v-container>
           </v-card>
         </v-col>
@@ -169,7 +193,6 @@ export default {
 
 .bg-light {
   background-color: var(--light);
-  opacity: 1;
 }
 
 v-container {
