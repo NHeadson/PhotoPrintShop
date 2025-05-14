@@ -1,41 +1,22 @@
 <script>
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-import { db } from "@/main.js";
-import { useUserStore } from "@/stores/userStore";
-
 export default {
-  name: "CartPage",
-  data() {
-    return {
-      cartItems: [],
-    };
-  },
-  async created() {
-    await this.fetchCartItems();
+  name: "Cart",
+  props: {
+    cartItems: {
+      type: Array,
+      required: true,
+    },
+  }, computed: {
+    totalPrice() {
+      return this.cartItems.reduce((total, item) => total + (item.price || 0) * (item.quantity || 1), 0).toFixed(2);
+    },
   },
   methods: {
-    async fetchCartItems() {
-      const userStore = useUserStore();
-      const userId = userStore.userUID;
-
-      if (userId) {
-        const cartRef = collection(db, "users", userId, "cart");
-        const querySnapshot = await getDocs(cartRef);
-        this.cartItems = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-      }
+    removeItem(itemId) {
+      this.$emit("remove-item", itemId);
     },
-    async removeItem(itemId) {
-      const userStore = useUserStore();
-      const userId = userStore.userUID;
-
-      if (userId) {
-        const itemRef = doc(db, "users", userId, "cart", itemId);
-        await deleteDoc(itemRef);
-        this.cartItems = this.cartItems.filter((item) => item.id !== itemId);
-      }
+    updateQuantity(itemId, newQuantity) {
+      this.$emit("update-quantity", {itemId, newQuantity});
     },
   },
 };
@@ -43,11 +24,53 @@ export default {
 
 <template>
   <v-container>
-    <v-row v-for="item in cartItems" :key="item.id">
-      <v-col>{{ item.photoId }}</v-col>
-      <v-col>{{ item.options.dimensions }}</v-col>
-      <v-col>{{ item.price }}</v-col>
-      <v-btn color="red" @click="removeItem(item.id)">Remove</v-btn>
+    <v-row v-if="cartItems.length">
+      <v-col cols="12">
+        <v-table>
+          <thead>
+          <tr>
+            <th>Photo</th>
+            <th>Dimensions</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="item in cartItems" :key="item.id">
+            <td>{{ item.photoId }}</td>
+            <td>{{ item.options.dimensions }}</td>
+            <td>${{ item.price.toFixed(2) }}</td>
+            <td>
+              <v-text-field
+                v-model="item.quantity"
+                type="number"
+                min="1"
+                @change="updateQuantity(item.id, item.quantity)"
+                outlined
+                dense
+                style="max-width: 60px;"
+              ></v-text-field>
+            </td>
+            <td>
+              <v-btn color="error" @click="removeItem(item.id)">Remove</v-btn>
+            </td>
+          </tr>
+          </tbody>
+        </v-table>
+        <div class="text-right mt-4">
+          <h3>Total: ${{ totalPrice }}</h3>
+        </div>
+      </v-col>
     </v-row>
+    <v-alert v-else type="info" class="mt-4">
+      Your cart is empty.
+    </v-alert>
   </v-container>
 </template>
+
+<style scoped>
+.text-right {
+  text-align: right;
+}
+</style>

@@ -53,4 +53,16 @@ export default {
 </template>
 
 <!-- STYLES -->
-<style scoped></style>
+<style scoped>
+
+v-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+v-main {
+  flex: 1;
+}
+
+</style>

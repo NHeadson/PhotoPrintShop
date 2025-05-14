@@ -17,7 +17,10 @@ export default {
     if (userId) {
       const cartRef = collection(db, "users", userId, "cart");
       const querySnapshot = await getDocs(cartRef);
-      this.cartItems = querySnapshot.docs.map((doc) => doc.data());
+      this.cartItems = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        price: parseFloat(doc.data().price),
+      }));
     }
   },
 };

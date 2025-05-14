@@ -5,7 +5,7 @@ const createCartItemModel = (data, userId, photoModel) => {
 
   const id = data.id;
 
-  const itemPrice = photoModel.getPrice(data.chosenOptions);
+  const itemPrice = parseFloat(photoModel.getPrice(data.chosenOptions));
 
   return new CartItemModel(
     id,

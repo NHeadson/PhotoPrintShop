@@ -7,7 +7,7 @@ class CartItemModel {
     this.userId = userId;
     this.photoId = photoId;
     this.chosenOptions = chosenOptions;
-    this.itemPrice = itemPrice;
+    this.itemPrice = parseFloat(itemPrice);
   }
   getTotal() {
     return this.itemPrice * (this.chosenOptions.quantity || 1); // Quantity should be in options

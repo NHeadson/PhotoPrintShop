@@ -1,7 +1,6 @@
 <script>
 export default {
   name: 'HomeCarousel',
-  components: {},
   props: {
     photos: {
       type: Array,
@@ -10,15 +9,9 @@ export default {
   },
   computed: {
     filteredPhotos() {
-      return this.photos.filter(photo => !photo.width.endsWith('-wide'));
+      return this.photos.filter(photo => photo.width !== 'full-wide');
     },
   },
-  data() {
-    return {
-      title: 'HomeCarousel'
-    };
-  },
-  methods: {},
 };
 </script>
 
@@ -30,7 +23,7 @@ export default {
   >
     <v-carousel
       class="pa-0 ma-0"
-      height="85vh"
+      height="80vh"
       :show-arrows="false"
       hide-delimiters
       cycle
@@ -39,16 +32,15 @@ export default {
     >
       <v-carousel-item
         v-for="photo in filteredPhotos"
-        :key="photo.title"
+        :key="photo.id"
       >
         <v-img
           class="ma-auto"
           :src="photo.src"
           height="100%"
-          position="50% 45%"
+          position="center"
           cover
         >
-
         </v-img>
       </v-carousel-item>
     </v-carousel>
@@ -56,5 +48,18 @@ export default {
 </template>
 
 <style scoped>
+v-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
 
+v-carousel {
+  flex: 1;
+  height: 100%;
+}
+
+v-img {
+  object-fit: cover;
+}
 </style>

@@ -4,7 +4,7 @@ import {collection, addDoc} from "firebase/firestore";
 import {useUserStore} from "@/stores/userStore";
 
 export default {
-  name: 'PhotoCard',
+  name: "PhotoCard",
   props: {
     photo: {
       type: Object,
@@ -16,36 +16,44 @@ export default {
       isLoading: true,
       showModal: false,
       printOptions: {
-        dimensions: '',
-        medium: '',
-        finish: '',
-        frame: '',
+        dimensions: "",
+        medium: "",
+        finish: "",
+        frame: "",
+        quantity: 1,
       },
-      basePrice: 20.00,
+      basePrice: 20.0,
       rules: {
         required: (value) => !!value || "This field is required.",
       },
     };
   },
   computed: {
-    formattedPrice() {
+    price() {
       let price = this.basePrice;
 
       // Size Options
-      if (this.printOptions.dimensions === '16x20 +$15') price += 15.00;
-      if (this.printOptions.dimensions === '24x36 +$30') price += 30.00;
+      if (this.printOptions.dimensions === "16x20") price += 15.0;
+      if (this.printOptions.dimensions === "24x36") price += 30.0;
 
       // Print Medium Options
-      if (this.printOptions.medium === 'Professional Paper +$15') price += 15.00;
-      if (this.printOptions.medium === 'Canvas +$35') price += 35.00;
+      if (this.printOptions.medium === "Professional Paper") price += 15.0;
+      if (this.printOptions.medium === "Canvas") price += 35.0;
 
       // Finish Options
-      if (this.printOptions.finish === 'Semi-Gloss +$4.50') price += 4.50;
-      if (this.printOptions.finish === 'Matte +$7') price += 7.00;
+      if (this.printOptions.finish === "Semi-Gloss") price += 4.5;
+      if (this.printOptions.finish === "Matte") price += 7.0;
 
-      if (this.printOptions.frame === 'Black Frame +$20' || this.printOptions.frame === 'White Frame +$20') price += 20.00;
+      if (
+        this.printOptions.frame === "Black Frame" ||
+        this.printOptions.frame === "White Frame"
+      )
+        price += 20.0;
 
-      return `$${price.toFixed(2)}`;
+      return price;
+    },
+    formattedPrice() {
+      return `$${this.price.toFixed(2)}`;
     },
   },
   methods: {
@@ -62,7 +70,7 @@ export default {
         const cartItem = {
           photoId: this.photo.id,
           options: this.printOptions,
-          price: parseFloat(this.formattedPrice), // Use the computed price
+          price: this.price, // Use numeric price
           addedAt: new Date(),
         };
         const cartRef = collection(db, "users", userId, "cart");
@@ -85,16 +93,8 @@ export default {
 
 <template>
   <v-hover v-slot="{ isHovering, props }">
-    <v-card
-      class="mx-auto"
-      variant="outlined"
-      v-bind="props"
-    >
-      <v-skeleton-loader
-        v-if="isLoading"
-        type="image"
-        height="40vh"
-      />
+    <v-card class="mx-auto" variant="outlined" v-bind="props">
+      <v-skeleton-loader v-if="isLoading" type="image" height="40vh"/>
 
       <v-img
         v-show="!isLoading"
@@ -120,24 +120,21 @@ export default {
   <v-dialog v-model="showModal" max-width="80vw" class="modal-bg">
     <v-card class="d-flex flex-row card-bg" height="80vh">
       <!-- Full Image -->
-      <v-img
-        :src="photo.src"
-        class="flex-grow-1 px-0 mx-0"
-      ></v-img>
+      <v-img :src="photo.src" class="flex-grow-1 px-0 mx-0"></v-img>
 
       <!-- Print Options Menu -->
       <v-container class="pa-8 align-self-center menu-bg" width="30%">
         <h3>Print Options</h3>
         <v-select
           v-model="printOptions.dimensions"
-          :items="['8x10', '16x20 +$15', '24x36 +$30']"
+          :items="['8x10', '16x20', '24x36']"
           label="Dimensions"
           :rules="[rules.required]"
           outlined
         ></v-select>
         <v-select
           v-model="printOptions.medium"
-          :items="['Canvas +$35', 'Standard Paper', 'Professional Paper +$15']"
+          :items="['Canvas', 'Standard Paper', 'Professional Paper']"
           label="Select Medium"
           :rules="[rules.required]"
           placeholder="Choose a medium"
@@ -145,7 +142,7 @@ export default {
         ></v-select>
         <v-select
           v-model="printOptions.finish"
-          :items="['Matte +$7', 'Semi-Gloss +$4.50', 'High-Gloss']"
+          :items="['Matte', 'Semi-Gloss', 'High-Gloss']"
           label="Select Finish"
           :rules="[rules.required]"
           placeholder="Choose a finish"
@@ -153,23 +150,21 @@ export default {
         ></v-select>
         <v-select
           v-model="printOptions.frame"
-          :items="['No Frame', 'Black Frame +$20', 'White Frame +$20']"
+          :items="['No Frame', 'Black Frame', 'White Frame']"
           label="Select Frame"
           :rules="[rules.required]"
           placeholder="Choose a frame"
           outlined
-          :disabled="printOptions.medium === 'Canvas +$35'"
+          :disabled="printOptions.medium === 'Canvas'"
         ></v-select>
         <p class="mt-4"><strong>Price:</strong> {{ formattedPrice }}</p>
         <v-btn color="var(--link)" class="mt-4" @click="handleAddToCart">Add to Cart</v-btn>
       </v-container>
     </v-card>
   </v-dialog>
-
 </template>
 
 <style scoped>
-
 .modal-bg {
   background-color: rgba(0, 0, 0, 0.8);
 }
@@ -189,5 +184,4 @@ export default {
 .overlay:hover {
   cursor: pointer;
 }
-
 </style>

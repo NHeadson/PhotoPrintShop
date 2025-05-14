@@ -57,7 +57,7 @@ export default {
 </script>
 
 <template>
-  <v-container class="pa-4 pt-5 pb-0" max-width="600px">
+  <v-container class="bg-light pa-4 pt-5 pb-0" max-width="600px">
     <v-card-title>Edit Account Details</v-card-title>
     <v-card-text>
       <v-form>
@@ -101,7 +101,13 @@ export default {
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-btn color="var(--link)" size="medium" @click="saveChanges">Save Changes</v-btn>
+      <v-btn
+        color="var(--link)"
+        style="outline: 2px solid var(--link);"
+        size="medium"
+        @click="saveChanges"
+      >Save Changes
+      </v-btn>
     </v-card-actions>
   </v-container>
 </template>
@@ -110,4 +116,11 @@ export default {
 .text-color {
   color: var(--dark);
 }
+
+.bg-light {
+  background-color: var(--light);
+  opacity: 1;
+}
+
+
 </style>

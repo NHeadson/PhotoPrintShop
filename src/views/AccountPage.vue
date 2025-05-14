@@ -63,29 +63,34 @@ export default {
         <v-card
           class="text-color pa-0"
           color="var(--light)"
-          height="30vh"
+          style="min-height: auto;"
         >
           <v-card-title class="ml-3 mr-16">Account Details</v-card-title>
           <v-card-text class="ml-8 mb-0 pb-0">Welcome, {{ userStore.profile?.firstName || "User" }}!</v-card-text>
-          <v-container width="25vw" class="mt-4 pa-0 ma-0">
-            <v-table class="mx-10 px-15 bg-light">
+          <v-container class="mt-4 pa-0 ma-0 mx-auto" style="width: 80%;">
+            <v-table class="mx-auto bg-light" style="width: 100%;">
               <tbody>
               <tr>
-                <td><strong>Name:</strong><br> {{ (userStore.profile?.firstName) + ' ' + (userStore.profile?.lastName) }}
+                <td><strong>Name:</strong><br> {{
+                    (userStore.profile?.firstName) + ' ' + (userStore.profile?.lastName)
+                  }}
                 </td>
               </tr>
               <tr>
                 <td><strong>Email:</strong><br> {{ userStore.profile?.email }}</td>
               </tr>
               <tr>
-                <td><strong>Shipping Address:</strong><br> {{ userStore.profile?.shippingAddress || 'No Address Saved.' }}
+                <td><strong>Shipping Address:</strong><br> {{
+                    userStore.profile?.shippingAddress || 'No Address Saved.'
+                  }}
                 </td>
               </tr>
               </tbody>
             </v-table>
           </v-container>
           <v-container class="pa-0">
-            <v-btn color="var(--link)" size="small" class="text-color-dark float-right mr-5" @click="openEditModal">
+            <v-btn color="var(--link)" size="small" class="text-color-dark float-right mr-5 my-5"
+                   @click="openEditModal">
               Edit Details
             </v-btn>
           </v-container>
@@ -108,7 +113,7 @@ export default {
             height="50vh"
           >
             <v-card-title class="text-color">Customer Options</v-card-title>
-            <v-btn @click="viewOrderHistory">View Order History</v-btn>
+            <v-btn class="ml-7" @click="viewOrderHistory">View Order History</v-btn>
             <v-container v-for="order in orders" :key="order.id">
               <p>Order ID: {{ order.id }}</p>
               <p>Total: {{ order.totalAmount }}</p>
@@ -117,7 +122,7 @@ export default {
         </v-col>
       </v-row>
     </v-container>
-    <!-- Admin-specific options -->
+    <!-- Employee-specific options -->
     <v-container
       v-else
       max-width="100vw"
@@ -133,6 +138,11 @@ export default {
             height="50vh"
           >
             <v-card-title class="text-color">Admin Options</v-card-title>
+            <v-btn class="ml-7" @click="viewOrderHistory">View Employee's Order History</v-btn>
+            <v-container v-for="order in orders" :key="order.id">
+              <p>Order ID: {{ order.id }}</p>
+              <p>Total: {{ order.totalAmount }}</p>
+            </v-container>
           </v-card>
         </v-col>
       </v-row>
@@ -159,6 +169,65 @@ export default {
 
 .bg-light {
   background-color: var(--light);
+  opacity: 1;
 }
 
+v-container {
+  padding: 0;
+}
+
+v-card {
+  width: 100%;
+  min-height: 100%;
+}
+
+v-table {
+  width: 100%;
+  margin: 0;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+v-dialog {
+  opacity: 1 !important;
+}
+
+@media (max-width: 768px) {
+  .v-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  v-col {
+    width: 100%;
+  }
+
+  v-card {
+    min-height: auto;
+    padding: 1rem;
+  }
+
+  .v-btn {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .v-table {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  v-card {
+    padding: 0.5rem;
+  }
+
+  .v-btn {
+    font-size: 0.8rem;
+  }
+
+  .v-table {
+    font-size: 0.8rem;
+  }
+}
 </style>
