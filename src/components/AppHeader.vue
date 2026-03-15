@@ -33,7 +33,7 @@ export default {
 
 <template>
   <template v-if="!isLoggedIn">
-    <v-app-bar color="var(--primary)" scroll-behavior="hide" scroll-threshold="1">
+    <v-app-bar color="var(--primary)" scroll-behavior="scroll-threshold" scroll-threshold="2">
       <template v-slot:prepend>
         <v-app-bar-nav-icon
           class="ml-4 nav-link"
@@ -58,7 +58,7 @@ export default {
     </v-app-bar>
   </template>
   <template v-else>
-    <v-app-bar color="var(--primary)" scroll-behavior="hide" scroll-threshold="1">
+    <v-app-bar color="var(--primary)" scroll-behavior="scroll-threshold" scroll-threshold="2">
       <template v-slot:prepend>
         <v-app-bar-nav-icon class="ml-4 nav-link" to="/">
           <v-icon color="var(--dark)" icon="mdi-camera" size="large"></v-icon>
@@ -92,6 +92,33 @@ export default {
 
 .nav-link:hover {
   background-color: var(--link);
+}
+
+@media (max-width: 768px) {
+  
+  .nav-link {
+    font-size: 0.6rem;
+    padding: 0.2rem;
+  }
+
+  .text-dark {
+    font-size: 1rem;
+    opacity: 0%;
+  }
+
+  .text-dark:hover {
+    cursor: default;
+  }
+
+}
+
+@media (max-width: 480px) {
+  
+  .nav-link {
+    font-size: 0.6rem;
+    padding: 0.2rem;
+  }
+
 }
 
 </style>

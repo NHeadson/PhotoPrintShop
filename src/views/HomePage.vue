@@ -53,10 +53,10 @@ export default {
             height="90%"
             class="d-flex flex-column justify-center align-center text-center pa-3"
           >
-            <h2 class="text-h4 font-weight-bold mb-4">
+            <h1 class="font-weight-bold mb-4">
               Bring Stunning Photography to Your Walls
-            </h2>
-            <p class="text-subtitle-1 mb-6">
+            </h1>
+            <p class="mb-6">
               Explore our curated collection of high-quality prints and find the perfect piece
               to enhance your home or office. Each image is available in multiple sizes.
             </p>
@@ -76,8 +76,8 @@ export default {
   position: relative;
   background: var(--primary);
   color: var(--dark);
-  width: 50vw;
-  margin: 4% auto auto auto;
+  width: 30vw;
+  margin: auto;
 }
 
 .modal-overlay {
@@ -90,16 +90,19 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 10;
-  padding: 1rem;
 }
 
-h2 {
-  font-size: 2rem;
+h1 {
+  font-size: 1rem;
 }
 
-@media (max-width: 768px) {
+p {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1100px) {
   .cta-banner {
-    width: 90%;
+    width: 95%;
     margin: 2% auto;
   }
 
@@ -108,25 +111,62 @@ h2 {
     padding: 0.5rem;
   }
 
-  h2 {
+  h1 {
     font-size: 1.5rem;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .cta-banner {
+    position: fixed;
+    top: 10%;
+    left: 12%;
+    width: 75vw;
+  }
+
+  .modal-overlay {
+    height: 80vh;
+    width: 100vw;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  .nav-link {
+    font-size: 0.7rem;
   }
 
 }
 
 @media (max-width: 480px) {
   .cta-banner {
-    width: 95%;
-    margin: 1% auto;
+    position: fixed;
+    top: 10%;
+    left: 12%;
+    width: 75vw;
   }
 
   .modal-overlay {
-    height: 90vh;
-    padding: 0.25rem;
+    height: 80vh;
+    width: 100vw;
   }
 
-  h2 {
+  h1 {
     font-size: 1.2rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  .nav-link {
+    font-size: 0.7rem;
   }
 
 }
