@@ -79,7 +79,6 @@ export default {
 
 <template>
   <v-container>
-    <h1>Your Cart</h1>
     <template v-if="!showCheckoutForm">
       <Cart :cartItems="cartItems" :photos="$root.$data.photos" @remove-item="removeCartItem"
         @update-quantity="updateCartItemQuantity" />

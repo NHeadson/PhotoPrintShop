@@ -1,5 +1,5 @@
 <script>
-import {useUserStore} from "@/stores/userStore";
+import { useUserStore } from "@/stores/userStore";
 
 export default {
   name: "EditAccountForm",
@@ -9,7 +9,12 @@ export default {
       lastName: "",
       email: "",
       password: "",
-      shippingAddress: "",
+      shippingAddress: {
+        street: "",
+        city: "",
+        state: "",
+        zip: "",
+      },
       showPassword: false,
       rules: {
         required: (value) => !!value || "Required.",
@@ -24,23 +29,36 @@ export default {
       return useUserStore();
     },
   },
-  mounted() {
-    const profile = this.userStore.profile;
-    if (profile) {
-      this.firstName = profile.firstName || "";
-      this.lastName = profile.lastName || "";
-      this.email = profile.email || "";
-      this.shippingAddress = profile.shippingAddress || "";
-    }
-  },
   methods: {
+    normalizeShippingAddress(shippingAddress) {
+      if (!shippingAddress) {
+        return { street: "", city: "", state: "", zip: "" };
+      }
+
+      if (typeof shippingAddress === "string") {
+        const [street = "", city = "", state = "", zip = ""] = shippingAddress.split(", ");
+        return { street, city, state, zip };
+      }
+
+      return {
+        street: shippingAddress.street || "",
+        city: shippingAddress.city || "",
+        state: shippingAddress.state || "",
+        zip: shippingAddress.zip || shippingAddress.zipCode || "",
+      };
+    },
     async saveChanges() {
       try {
         const updates = {
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
-          shippingAddress: this.shippingAddress,
+          shippingAddress: {
+            street: this.shippingAddress.street.trim(),
+            city: this.shippingAddress.city.trim(),
+            state: this.shippingAddress.state.trim(),
+            zip: this.shippingAddress.zip.trim(),
+          },
         };
         if (this.password) {
           updates.password = this.password;
@@ -53,6 +71,15 @@ export default {
       }
     },
   },
+  mounted() {
+    const profile = this.userStore.profile;
+    if (profile) {
+      this.firstName = profile.firstName || "";
+      this.lastName = profile.lastName || "";
+      this.email = profile.email || "";
+      this.shippingAddress = this.normalizeShippingAddress(profile.shippingAddress);
+    }
+  },
 };
 </script>
 
@@ -61,52 +88,23 @@ export default {
     <v-card-title>Edit Account Details</v-card-title>
     <v-card-text>
       <v-form>
-        <v-text-field
-          color="var(--light)"
-          v-model="firstName"
-          :rules="[rules.required]"
-          label="First Name"
-          clearable
-        ></v-text-field>
-        <v-text-field
-          color="var(--light)"
-          v-model="lastName"
-          :rules="[rules.required]"
-          label="Last Name"
-          clearable
-        ></v-text-field>
-        <v-text-field
-          color="var(--light)"
-          v-model="email"
-          :rules="[rules.required, rules.email]"
-          label="Email"
-          clearable
-        ></v-text-field>
-        <v-text-field
-          color="var(--light)"
-          v-model="password"
-          :type="showPassword ? 'text' : 'password'"
-          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          label="Password"
-          @click:append="showPassword = !showPassword"
-          clearable
-        ></v-text-field>
-        <v-textarea
-          color="var(--light)"
-          v-model="shippingAddress"
-          label="Shipping Address"
-          rows="3"
-          clearable
-        ></v-textarea>
+        <v-text-field color="var(--light)" v-model="firstName" :rules="[rules.required]" label="First Name"
+          clearable></v-text-field>
+        <v-text-field color="var(--light)" v-model="lastName" :rules="[rules.required]" label="Last Name"
+          clearable></v-text-field>
+        <v-text-field color="var(--light)" v-model="email" :rules="[rules.required, rules.email]" label="Email"
+          clearable></v-text-field>
+        <v-text-field color="var(--light)" v-model="password" :type="showPassword ? 'text' : 'password'"
+          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" label="Password"
+          @click:append="showPassword = !showPassword" clearable></v-text-field>
+        <v-text-field color="var(--light)" v-model="shippingAddress.street" label="Street" clearable></v-text-field>
+        <v-text-field color="var(--light)" v-model="shippingAddress.city" label="City" clearable></v-text-field>
+        <v-text-field color="var(--light)" v-model="shippingAddress.state" label="State" clearable></v-text-field>
+        <v-text-field color="var(--light)" v-model="shippingAddress.zip" label="Zip" clearable></v-text-field>
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-btn
-        color="var(--link)"
-        style="outline: 2px solid var(--link);"
-        size="medium"
-        @click="saveChanges"
-      >Save Changes
+      <v-btn color="var(--link)" style="outline: 2px solid var(--link);" size="medium" @click="saveChanges">Save Changes
       </v-btn>
     </v-card-actions>
   </v-container>
@@ -121,6 +119,4 @@ export default {
   background-color: var(--light);
   opacity: 1;
 }
-
-
 </style>

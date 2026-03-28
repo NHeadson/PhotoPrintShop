@@ -92,9 +92,20 @@ export default {
         </div>
       </v-col>
     </v-row>
-    <v-alert v-else type="info" color="var(--link)" class="alert mt-4 justify-center mx-auto" width="20vw">
-      Your cart is empty.
-    </v-alert>
+    <v-row v-else class="justify-center mt-6">
+      <v-col cols="12" sm="10" md="8" lg="6">
+        <v-sheet class="empty-cart-panel pa-8 text-center" rounded="lg">
+          <v-icon size="56" color="var(--link)">mdi-cart-off</v-icon>
+          <h2 class="mt-3 mb-2">Your cart is empty</h2>
+          <p class="empty-cart-subtext mb-6">
+            Add prints from the gallery to see them here and continue to checkout.
+          </p>
+          <v-btn color="var(--link)" size="large" :to="{ name: 'GalleryPage' }">
+            Browse Gallery
+          </v-btn>
+        </v-sheet>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -107,17 +118,22 @@ export default {
   background-color: var(--light);
 }
 
-@media screen and (max-width: 1100px) {
-  .alert {
-    width: 50vw !important;
-  }
+.empty-cart-panel {
+  background: linear-gradient(180deg, var(--light) 0%, #ffffff 100%);
+  border: 1px solid #d8d8d8;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
 
+.empty-cart-subtext {
+  color: #4a4a4a;
+  max-width: 34ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media screen and (max-width: 768px) {
-  .alert {
-    width: 50vw !important;
+  .empty-cart-panel {
+    padding: 1.5rem !important;
   }
-
 }
 </style>

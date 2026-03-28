@@ -1,11 +1,9 @@
 import { defineStore } from "pinia";
 import { auth, db } from "@/main";
-import { onAuthStateChanged, signOut, getAuth } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import {
-  getFirestore,
   doc,
   getDoc,
-  setDoc,
   collection,
   getDocs,
   updateDoc,
@@ -17,7 +15,6 @@ export const useUserStore = defineStore("user", {
     userUID: null,
     profile: null,
     user: null,
-    role: null,
     cartItems: [],
   }),
   actions: {

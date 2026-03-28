@@ -7,6 +7,19 @@ export default {
       required: true,
     },
   },
+  methods: {
+    formatShippingAddress(shippingAddress) {
+      if (!shippingAddress) return "N/A";
+      if (typeof shippingAddress === "string") return shippingAddress;
+
+      const street = shippingAddress.street || "";
+      const city = shippingAddress.city || "";
+      const state = shippingAddress.state || "";
+      const zip = shippingAddress.zip || shippingAddress.zipCode || "";
+      const cityStateZip = [city, state].filter(Boolean).join(", ");
+      return [street, cityStateZip, zip].filter(Boolean).join(" ").trim() || "N/A";
+    },
+  },
 };
 </script>
 
@@ -17,22 +30,22 @@ export default {
     <p><strong>Order ID:</strong> {{ orderDetails.orderId }}</p>
     <p><strong>Order Date:</strong> {{ new Date(orderDetails.orderDate).toLocaleString() }}</p>
     <p><strong>Total Amount:</strong> ${{ orderDetails.totalAmount.toFixed(2) }}</p>
-    <p><strong>Shipping Address:</strong> {{ orderDetails.shippingAddress }}</p>
+    <p><strong>Shipping Address:</strong> {{ formatShippingAddress(orderDetails.shippingAddress) }}</p>
     <h3>Items:</h3>
     <v-table>
       <thead>
-      <tr>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-      </tr>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
       </thead>
       <tbody>
-      <tr v-for="item in orderDetails.items" :key="item.id">
-        <td>{{ item.name }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>${{ item.price.toFixed(2) }}</td>
-      </tr>
+        <tr v-for="item in orderDetails.items" :key="item.id">
+          <td>{{ item.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>${{ item.price.toFixed(2) }}</td>
+        </tr>
       </tbody>
     </v-table>
   </v-container>

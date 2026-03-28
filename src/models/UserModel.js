@@ -1,20 +1,24 @@
 class UserModel {
-  constructor(id, email, role, firstName = '', lastName = '', shippingAddress = null) {
-    if (!id || !email || !role) {
-      throw new Error('User ID, email, and role are required.');
+  constructor(
+    id,
+    email,
+    firstName = "",
+    lastName = "",
+    shippingAddress = { street: "", city: "", state: "", zip: "" },
+  ) {
+    if (!id || !email) {
+      throw new Error("User ID and email are required.");
     }
     this.id = id;
     this.email = email;
-    this.role = role;   // 'customer' or 'employee'
     this.firstName = firstName;
     this.lastName = lastName;
-    this.shippingAddress = shippingAddress;
-  }
-  isEmployee() {
-    return this.role === 'employee';
-  }
-  isCustomer() {
-    return this.role === 'customer';
+    this.shippingAddress = shippingAddress || {
+      street: "",
+      city: "",
+      state: "",
+      zip: "",
+    };
   }
 }
 
