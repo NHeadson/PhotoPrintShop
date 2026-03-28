@@ -42,18 +42,24 @@ export const useUserStore = defineStore("user", {
       if (!this.userUID) return;
       const cartRef = collection(db, "users", this.userUID, "cart");
       const querySnapshot = await getDocs(cartRef);
-      this.cartItems = querySnapshot.docs.map((doc) => {
-        const data = doc.data();
-        const quantity =
-          data.quantity ??
-          data.options?.quantity ??
-          data.chosenOptions?.quantity ??
-          1;
+      this.cartItems = querySnapshot.docs.map((docSnapshot) => {
+        const data = docSnapshot.data();
+        const quantity = Math.max(
+          1,
+          parseInt(
+            data.quantity ??
+              data.options?.quantity ??
+              data.chosenOptions?.quantity ??
+              data.itemQty,
+            10,
+          ) || 1,
+        );
 
         return {
-          id: doc.id,
+          id: docSnapshot.id,
           ...data,
           options: data.options || data.chosenOptions || {},
+          chosenOptions: data.chosenOptions || data.options || {},
           price: data.price ?? data.itemPrice ?? 0,
           quantity,
         };

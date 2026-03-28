@@ -14,8 +14,19 @@ export default {
     cartItemsWithImages() {
       return this.cartItems.map((item) => {
         const photo = this.photos.find((p) => p.id === item.photoId);
+        const quantity = Math.max(
+          1,
+          parseInt(
+            item.quantity ?? item.options?.quantity ?? item.chosenOptions?.quantity ?? item.itemQty,
+            10
+          ) || 1
+        );
+
         return {
           ...item,
+          options: item.options || item.chosenOptions || {},
+          price: item.price ?? item.itemPrice ?? 0,
+          quantity,
           photoUrl: photo ? photo.src : null,
         };
       });
@@ -29,7 +40,8 @@ export default {
       this.$emit("remove-item", itemId);
     },
     updateQuantity(itemId, newQuantity) {
-      this.$emit("update-quantity", { itemId, newQuantity: parseInt(newQuantity) || 1 });
+      const quantity = Math.max(1, parseInt(newQuantity, 10) || 1);
+      this.$emit("update-quantity", { itemId, newQuantity: quantity });
     },
   },
 };
@@ -63,8 +75,8 @@ export default {
               <td class="text-center">{{ item.options.frame || "N/A" }}</td>
               <td class="text-center">${{ item.price.toFixed(2) }}</td>
               <td>
-                <v-text-field v-model="item.quantity" type="number" class="text-dark mx-auto my-3 pt-3"
-                  @change="updateQuantity(item.id, item.quantity)" outlined dense
+                <v-text-field v-model.number="item.quantity" type="number" min="1" step="1"
+                  class="text-dark mx-auto my-3 pt-3" @change="updateQuantity(item.id, item.quantity)" outlined dense
                   style="max-width: 65px;"></v-text-field>
               </td>
               <td>

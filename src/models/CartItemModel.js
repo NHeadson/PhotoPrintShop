@@ -8,9 +8,10 @@ class CartItemModel {
     this.photoId = photoId;
     this.chosenOptions = chosenOptions;
     this.itemPrice = parseFloat(itemPrice);
+    this.itemQty = parseInt(chosenOptions.quantity) || 1; // Default to 1 if quantity is not provided
   }
   getTotal() {
-    return this.itemPrice * (this.chosenOptions.quantity || 1); // Quantity should be in options
+    return this.itemPrice * this.itemQty;
   }
 }
 
