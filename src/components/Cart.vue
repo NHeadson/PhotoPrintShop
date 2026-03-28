@@ -29,7 +29,7 @@ export default {
       this.$emit("remove-item", itemId);
     },
     updateQuantity(itemId, newQuantity) {
-      this.$emit("update-quantity", {itemId, newQuantity});
+      this.$emit("update-quantity", { itemId, newQuantity: parseInt(newQuantity) || 1 });
     },
   },
 };
@@ -41,54 +41,38 @@ export default {
       <v-col cols="12">
         <v-table class="text-center bg-light">
           <thead>
-          <tr>
-            <th class="text-center">Photo</th>
-            <th class="text-center">Dimensions</th>
-            <th class="text-center">Medium</th>
-            <th class="text-center">Finish</th>
-            <th class="text-center">Frame</th>
-            <th class="text-center">Price</th>
-            <th class="text-center">Quantity</th>
-            <th class="text-center">Actions</th>
-          </tr>
+            <tr>
+              <th class="text-center">Photo</th>
+              <th class="text-center">Dimensions</th>
+              <th class="text-center">Medium</th>
+              <th class="text-center">Finish</th>
+              <th class="text-center">Frame</th>
+              <th class="text-center">Price</th>
+              <th class="text-center">Quantity</th>
+              <th class="text-center">Actions</th>
+            </tr>
           </thead>
           <tbody>
-          <tr v-for="item in cartItemsWithImages" :key="item.id">
-            <td>
-              <v-img
-                :src="item.photoUrl"
-                alt="Photo Thumbnail"
-                height="100%"
-                class="rounded"
-              ></v-img>
-            </td>
-            <td class="text-center">{{ item.options.dimensions }}</td>
-            <td class="text-center">{{ item.options.medium || "N/A" }}</td>
-            <td class="text-center">{{ item.options.finish || "N/A" }}</td>
-            <td class="text-center">{{ item.options.frame || "N/A" }}</td>
-            <td class="text-center">${{ item.price.toFixed(2) }}</td>
-            <td>
-              <v-text-field
-                v-model="item.quantity"
-                type="number"
-                min="1"
-                class="mx-auto my-3 pt-3"
-                @change="updateQuantity(item.id, item.quantity)"
-                outlined
-                dense
-                style="max-width: 60px;"
-              ></v-text-field>
-            </td>
-            <td>
-              <v-btn
-                color="error"
-                icon
-                @click="removeItem(item.id)"
-              >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </td>
-          </tr>
+            <tr v-for="item in cartItemsWithImages" :key="item.id">
+              <td>
+                <v-img :src="item.photoUrl" alt="Photo Thumbnail" height="100%" class="rounded"></v-img>
+              </td>
+              <td class="text-center">{{ item.options.dimensions }}</td>
+              <td class="text-center">{{ item.options.medium || "N/A" }}</td>
+              <td class="text-center">{{ item.options.finish || "N/A" }}</td>
+              <td class="text-center">{{ item.options.frame || "N/A" }}</td>
+              <td class="text-center">${{ item.price.toFixed(2) }}</td>
+              <td>
+                <v-text-field v-model="item.quantity" type="number" class="text-dark mx-auto my-3 pt-3"
+                  @change="updateQuantity(item.id, item.quantity)" outlined dense
+                  style="max-width: 65px;"></v-text-field>
+              </td>
+              <td>
+                <v-btn color="error" icon @click="removeItem(item.id)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </td>
+            </tr>
           </tbody>
         </v-table>
         <div class="pr-10 bg-light text-right">
@@ -96,7 +80,7 @@ export default {
         </div>
       </v-col>
     </v-row>
-    <v-alert v-else type="info" color="var(--link)" class="mt-4 justify-center mx-auto" width="20vw">
+    <v-alert v-else type="info" color="var(--link)" class="alert mt-4 justify-center mx-auto" width="20vw">
       Your cart is empty.
     </v-alert>
   </v-container>
@@ -111,4 +95,17 @@ export default {
   background-color: var(--light);
 }
 
+@media screen and (max-width: 1100px) {
+  .alert {
+    width: 50vw !important;
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+  .alert {
+    width: 50vw !important;
+  }
+
+}
 </style>

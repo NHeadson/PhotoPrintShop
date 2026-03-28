@@ -1,9 +1,17 @@
-import { defineStore } from 'pinia';
-import { auth, db } from '@/main';
-import { onAuthStateChanged, signOut, getAuth } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, collection, getDocs, updateDoc } from 'firebase/firestore';
+import { defineStore } from "pinia";
+import { auth, db } from "@/main";
+import { onAuthStateChanged, signOut, getAuth } from "firebase/auth";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 
-export const useUserStore = defineStore('user', {
+export const useUserStore = defineStore("user", {
   state: () => ({
     isLoggedIn: false,
     userUID: null,
@@ -14,14 +22,14 @@ export const useUserStore = defineStore('user', {
   }),
   actions: {
     async fetchUserProfile(uid) {
-      const userDoc = await getDoc(doc(db, 'users', uid));
+      const userDoc = await getDoc(doc(db, "users", uid));
       if (userDoc.exists()) {
         this.profile = userDoc.data();
       }
     },
     async updateUserProfile(updates) {
       if (!this.userUID) return;
-      await updateDoc(doc(db, 'users', this.userUID), updates);
+      await updateDoc(doc(db, "users", this.userUID), updates);
       this.profile = { ...this.profile, ...updates };
     },
     async logout() {
@@ -34,10 +42,22 @@ export const useUserStore = defineStore('user', {
       if (!this.userUID) return;
       const cartRef = collection(db, "users", this.userUID, "cart");
       const querySnapshot = await getDocs(cartRef);
-      this.cartItems = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      this.cartItems = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        const quantity =
+          data.quantity ??
+          data.options?.quantity ??
+          data.chosenOptions?.quantity ??
+          1;
+
+        return {
+          id: doc.id,
+          ...data,
+          options: data.options || data.chosenOptions || {},
+          price: data.price ?? data.itemPrice ?? 0,
+          quantity,
+        };
+      });
     },
     async monitorAuthState() {
       onAuthStateChanged(auth, async (user) => {

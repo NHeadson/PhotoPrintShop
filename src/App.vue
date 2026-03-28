@@ -43,6 +43,7 @@ export default {
     <v-main>
       <v-container
         class="pa-0 ma-0"
+        height="100%"
         fluid
       >
         <router-view :photos="photos" />

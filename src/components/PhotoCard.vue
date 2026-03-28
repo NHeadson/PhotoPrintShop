@@ -1,7 +1,7 @@
 <script>
-import {db} from "@/main.js";
-import {collection, addDoc} from "firebase/firestore";
-import {useUserStore} from "@/stores/userStore";
+import { db } from "@/main.js";
+import { collection, addDoc } from "firebase/firestore";
+import { useUserStore } from "@/stores/userStore";
 
 export default {
   name: "PhotoCard",
@@ -26,6 +26,7 @@ export default {
       rules: {
         required: (value) => !!value || "This field is required.",
       },
+      formValid: false,
     };
   },
   computed: {
@@ -57,12 +58,26 @@ export default {
     },
   },
   methods: {
+    isFormValid() {
+      return (
+        this.printOptions.dimensions !== "" &&
+        this.printOptions.medium !== "" &&
+        this.printOptions.finish !== "" &&
+        this.printOptions.frame !== ""
+      );
+    },
     async handleAddToCart() {
+      if (!this.isFormValid()) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
       const userStore = useUserStore();
       const userId = userStore.userUID;
 
       if (!userId) {
         alert("You must be logged in to add items to the cart.");
+        this.$router.push('/account');
         return;
       }
 
@@ -97,23 +112,13 @@ export default {
 <template>
   <v-hover v-slot="{ isHovering, props }">
     <v-card class="mx-auto" variant="outlined" v-bind="props">
-      <v-skeleton-loader v-if="isLoading" type="image" height="40vh"/>
+      <v-skeleton-loader v-if="isLoading" type="image" height="40vh" />
 
-      <v-img
-        v-show="!isLoading"
-        :src="photo.src"
-        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-        height="40vh"
-        cover
-      >
+      <v-img v-show="!isLoading" :src="photo.src" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="40vh"
+        cover>
       </v-img>
-      <v-overlay
-        :model-value="!!isHovering"
-        class="align-center justify-center overlay"
-        scrim="grey"
-        @click="showModal = true"
-        contained
-      >
+      <v-overlay :model-value="!!isHovering" class="align-center justify-center overlay" scrim="grey"
+        @click="showModal = true" contained>
         <v-btn variant="flat" color="var(--link)">View Full Image</v-btn>
       </v-overlay>
     </v-card>
@@ -122,49 +127,23 @@ export default {
   <!-- Modal -->
   <v-dialog v-model="showModal" max-width="80vw" class="modal-bg">
     <v-card class="d-flex flex-row card-bg" height="80vh">
-      <v-btn
-        color="var(--light)"
-        class="mr-3"
-        icon="mdi-close"
-        @click="showModal = false"></v-btn>
+      <v-btn color="var(--light)" class="mr-3" icon="mdi-close" @click="showModal = false"></v-btn>
       <!-- Full Image -->
       <v-img :src="photo.src" class="flex-grow-1 px-0 mx-0"></v-img>
 
       <!-- Print Options Menu -->
       <v-container class="pa-8 align-self-center menu-bg" width="30%">
         <h3>Print Options</h3>
-        <v-select
-          v-model="printOptions.dimensions"
-          :items="['8x10', '16x20 (+$15)', '24x36 (+$30)']"
-          label="Dimensions"
-          :rules="[rules.required]"
-          outlined
-        ></v-select>
-        <v-select
-          v-model="printOptions.medium"
-          :items="['Canvas (+$35)', 'Standard Paper', 'Professional Paper (+$15)']"
-          label="Select Medium"
-          :rules="[rules.required]"
-          placeholder="Choose a medium"
-          outlined
-        ></v-select>
-        <v-select
-          v-model="printOptions.finish"
-          :items="['Matte (+$7)', 'Semi-Gloss (+$4.50)', 'High-Gloss']"
-          label="Select Finish"
-          :rules="[rules.required]"
-          placeholder="Choose a finish"
-          outlined
-        ></v-select>
-        <v-select
-          v-model="printOptions.frame"
-          :items="['No Frame', 'Black Frame (+$20)', 'White Frame (+$20)']"
-          label="Select Frame"
-          :rules="[rules.required]"
-          placeholder="Choose a frame"
-          outlined
-          :disabled="printOptions.medium === 'Canvas'"
-        ></v-select>
+        <v-select v-model="printOptions.dimensions" :items="['8x10', '16x20 (+$15)', '24x36 (+$30)']" label="Dimensions"
+          :rules="[rules.required]" outlined></v-select>
+        <v-select v-model="printOptions.medium"
+          :items="['Canvas (+$35)', 'Standard Paper', 'Professional Paper (+$15)']" label="Select Medium"
+          :rules="[rules.required]" placeholder="Choose a medium" outlined></v-select>
+        <v-select v-model="printOptions.finish" :items="['Matte (+$7)', 'Semi-Gloss (+$4.50)', 'High-Gloss']"
+          label="Select Finish" :rules="[rules.required]" placeholder="Choose a finish" outlined></v-select>
+        <v-select v-model="printOptions.frame" :items="['No Frame', 'Black Frame (+$20)', 'White Frame (+$20)']"
+          label="Select Frame" :rules="[rules.required]" placeholder="Choose a frame" outlined
+          :disabled="printOptions.medium === 'Canvas'"></v-select>
         <p class="mt-4"><strong>Price:</strong> {{ formattedPrice }}</p>
         <v-btn color="var(--link)" class="mt-4" @click="handleAddToCart">Add to Cart</v-btn>
       </v-container>

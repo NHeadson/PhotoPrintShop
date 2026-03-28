@@ -205,7 +205,7 @@ export default {
           size="small"
           class="mt-5 mb-3 mr-2 pa-1"
           @click="toggleForm">
-          Sign Up Now
+          Register
           <v-icon icon="mdi-chevron-right" end></v-icon>
         </v-btn>
         <v-spacer></v-spacer>

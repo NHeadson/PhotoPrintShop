@@ -45,7 +45,7 @@ export default {
   mounted() {
     const userStore = useUserStore();
     if (userStore.profile) {
-      const {firstName, lastName, email, shippingAddress} = userStore.profile;
+      const { firstName, lastName, email, shippingAddress } = userStore.profile;
       this.user.firstName = firstName || "";
       this.user.lastName = lastName || "";
       this.user.email = email || "";
@@ -101,6 +101,7 @@ export default {
         const cartSnapshot = await getDocs(cartRef);
         const deletePromises = cartSnapshot.docs.map((doc) => deleteDoc(doc.ref));
         await Promise.all(deletePromises);
+        userStore.cartItems = [];
 
         this.$router.push({
           name: "AccountPage",
@@ -116,7 +117,7 @@ export default {
         expiration: "03/33",
         cvv: "333",
       };
-      const {number, expiration, cvv} = this.creditCard;
+      const { number, expiration, cvv } = this.creditCard;
       return (
         number === validCard.number &&
         expiration === validCard.expiration &&
@@ -138,96 +139,45 @@ export default {
     <h2>Checkout Form</h2>
     <v-row class="mt-5">
       <v-col cols="4">
-        <v-text-field
-          v-model="user.firstName"
-          label="First Name"
-          outlined
-          readonly
-          :rules="[rules.required]"
-        ></v-text-field>
+        <v-text-field v-model="user.firstName" label="First Name" outlined readonly
+          :rules="[rules.required]"></v-text-field>
       </v-col>
       <v-col cols="4">
-        <v-text-field
-          v-model="user.lastName"
-          label="Last Name"
-          outlined
-          readonly
-          :rules="[rules.required]"
-        ></v-text-field>
+        <v-text-field v-model="user.lastName" label="Last Name" outlined readonly
+          :rules="[rules.required]"></v-text-field>
       </v-col>
       <v-col cols="4">
-        <v-text-field
-          v-model="user.email"
-          label="Email"
-          outlined
-          readonly
-          :rules="[rules.required]"
-        ></v-text-field>
+        <v-text-field v-model="user.email" label="Email" outlined readonly :rules="[rules.required]"></v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-text-field
-          v-model="address.street"
-          label="Street Address"
-          outlined
-          :rules="[rules.required]"
-        ></v-text-field>
+        <v-text-field v-model="address.street" label="Street Address" outlined :rules="[rules.required]"></v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="4">
-        <v-text-field
-          v-model="address.city"
-          label="City"
-          outlined
-          :rules="[rules.required]"
-        ></v-text-field>
+        <v-text-field v-model="address.city" label="City" outlined :rules="[rules.required]"></v-text-field>
       </v-col>
       <v-col cols="4">
-        <v-text-field
-          v-model="address.state"
-          label="State"
-          outlined
-          :rules="[rules.required]"
-        ></v-text-field>
+        <v-text-field v-model="address.state" label="State" outlined :rules="[rules.required]"></v-text-field>
       </v-col>
       <v-col cols="4">
-        <v-text-field
-          v-model="address.zipCode"
-          label="Zip Code"
-          outlined
-          :rules="[rules.required]"
-        ></v-text-field>
+        <v-text-field v-model="address.zipCode" label="Zip Code" outlined :rules="[rules.required]"></v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="6">
-        <v-text-field
-          v-model="creditCard.number"
-          label="Credit Card Number"
-          outlined
-          maxlength="16"
-          :rules="[rules.required, rules.cardNumber]"
-        ></v-text-field>
+        <v-text-field v-model="creditCard.number" label="Credit Card Number" outlined maxlength="16"
+          :rules="[rules.required, rules.cardNumber]"></v-text-field>
       </v-col>
       <v-col cols="3">
-        <v-text-field
-          v-model="creditCard.expiration"
-          label="Expiration (MM/YY)"
-          outlined
-          maxlength="5"
-          :rules="[rules.required, rules.expiration]"
-        ></v-text-field>
+        <v-text-field v-model="creditCard.expiration" label="Expiration (MM/YY)" outlined maxlength="5"
+          :rules="[rules.required, rules.expiration]"></v-text-field>
       </v-col>
       <v-col cols="3">
-        <v-text-field
-          v-model="creditCard.cvv"
-          label="CVV"
-          outlined
-          maxlength="3"
-          :rules="[rules.required, rules.cvv]"
-        ></v-text-field>
+        <v-text-field v-model="creditCard.cvv" label="CVV" outlined maxlength="3"
+          :rules="[rules.required, rules.cvv]"></v-text-field>
       </v-col>
     </v-row>
     <v-row>

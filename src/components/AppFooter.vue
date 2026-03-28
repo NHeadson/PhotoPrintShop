@@ -6,12 +6,8 @@ export default {
 </script>
 
 <template>
-  <v-container
-    class="ma-0 pa-0"
-    height="4vh"
-    fluid
-  >
-    <v-footer color="var(--dark)" class="text-light text-center justify-start pl-15 pa-0" height="100%">
+  <v-container class="ma-0 pa-0" fluid>
+    <v-footer color="var(--dark)" class=" footer text-light text-center justify-start pl-15 pa-1" height="100%">
       © 2025 - Nick Headson
     </v-footer>
   </v-container>
@@ -20,5 +16,12 @@ export default {
 <style scoped>
 .text-light {
   color: var(--light);
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    justify-content: center !important;
+    padding-left: 0 !important;
+  }
 }
 </style>
