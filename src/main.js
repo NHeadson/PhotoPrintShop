@@ -12,7 +12,6 @@ import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import { useUserStore } from '@/stores/userStore';
-import { Analytics } from "@vercel/analytics/vue";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -42,4 +41,4 @@ const vuetify = createVuetify({
   },
 });
 
-createApp(App).use(pinia).use(vuetify).use(router).use(Analytics).mount('#app');
+createApp(App).use(pinia).use(vuetify).use(router).mount('#app');
