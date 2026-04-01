@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "fire
 import { doc, setDoc } from "firebase/firestore";
 import createUserModel from "@/factories/UserFactory";
 import { useUserStore } from "@/stores/userStore.js";
+import { useNotifications } from "@/stores/notificationStore";
 
 export default {
   name: "RegisterLogInForm",
@@ -28,8 +29,12 @@ export default {
       this.showLogin = !this.showLogin
     },
     async registerUser() {
+      const notifications = useNotifications();
       if (!this.terms) {
-        alert("Please agree to the terms and conditions");
+        notifications.warning("Please agree to the terms and conditions", {
+          title: "Action Required",
+          variant: "modal",
+        });
         return;
       }
       try {
@@ -49,21 +54,25 @@ export default {
           lastName: userModel.lastName,
           shippingAddress: userModel.shippingAddress,
         });
-        alert("Registration Successful!");
+        notifications.success("Registration successful!");
         this.toggleForm();
       } catch (error) {
         console.error('Error registering user: ', error);
-        alert("Registration failed: " + error.message);
+        notifications.error("Registration failed: " + error.message, {
+          title: "Registration Failed",
+          variant: "modal",
+        });
       }
     },
     async loginUser() {
+      const notifications = useNotifications();
       try {
         const userCredential = await signInWithEmailAndPassword(
           auth,
           this.email,
           this.password
         );
-        alert("Login Successful!");
+        notifications.success("Login successful!");
         console.log("Logged in user:", userCredential.user);
 
         this.$router.push('/account');
@@ -72,7 +81,10 @@ export default {
         userStore.monitorAuthState();
       } catch (error) {
         console.error("Error logging in user: ", error);
-        alert("Login failed: " + error.message);
+        notifications.error("Login failed: " + error.message, {
+          title: "Login Failed",
+          variant: "modal",
+        });
       }
     },
   },

@@ -10,6 +10,8 @@ import {
 } from "firebase/firestore";
 import { db } from "@/main.js";
 import { useUserStore } from "@/stores/userStore";
+import { useNotifications } from "@/stores/notificationStore";
+import { redirectAfterModal } from "@/utils/redirectAfterModal";
 
 const TEST_CARD = Object.freeze({
   number: "3333333333333333",
@@ -131,10 +133,14 @@ export default {
     },
     async placeOrder() {
       const userStore = useUserStore();
+      const notifications = useNotifications();
       const userId = userStore.userUID;
 
       if (!userId) {
-        alert("You must be logged in to place an order.");
+        notifications.warning("You must be logged in to place an order.", {
+          title: "Login Required",
+          variant: "modal",
+        });
         return;
       }
 
@@ -144,12 +150,18 @@ export default {
         !this.address.state.trim() ||
         !this.address.zipCode.trim()
       ) {
-        alert("Complete shipping address is required.");
+        notifications.warning("Complete shipping address is required.", {
+          title: "Missing Information",
+          variant: "modal",
+        });
         return;
       }
 
       if (!this.validateCreditCard()) {
-        alert("Invalid credit card details.");
+        notifications.warning("Invalid credit card details.", {
+          title: "Invalid Payment Details",
+          variant: "modal",
+        });
         return;
       }
 
@@ -194,15 +206,27 @@ export default {
         }
 
         if (cartClearFailed) {
-          alert("Order placed, but your cart could not be cleared due to Firestore permissions.");
+          await redirectAfterModal(
+            this.$router,
+            { name: "AccountPage" },
+            "Order placed, but your cart could not be cleared due to Firestore permissions.",
+            {
+              title: "Order Placed",
+              duration: 4200,
+            }
+          );
+        } else {
+          notifications.success("Order placed successfully!");
+          this.$router.push({
+            name: "AccountPage",
+          });
         }
-
-        this.$router.push({
-          name: "AccountPage",
-        });
       } catch (error) {
         console.error("Error placing order:", error);
-        alert(`Failed to place order (${error?.code || "unknown-error"}).`);
+        notifications.error(`Failed to place order (${error?.code || "unknown-error"}).`, {
+          title: "Order Failed",
+          variant: "modal",
+        });
       }
     },
     validateCreditCard() {

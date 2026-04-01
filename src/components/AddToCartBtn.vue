@@ -3,6 +3,7 @@ import createCartItemModel from "@/factories/CartItemFactory.js";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/main.js";
 import { useUserStore } from "@/stores/userStore";
+import { useNotifications } from "@/stores/notificationStore";
 
 export default {
   name: "AddToCartBtn",
@@ -13,10 +14,14 @@ export default {
   methods: {
     async addToCart() {
       const userStore = useUserStore();
+      const notifications = useNotifications();
       const userId = userStore.userUID;
 
       if (!userId) {
-        alert("You must be logged in to add items to the cart.");
+        notifications.warning("You must be logged in to add items to the cart.", {
+          title: "Login Required",
+          variant: "modal",
+        });
         return;
       }
 
@@ -33,9 +38,10 @@ export default {
         // Fetch updated cart items
         await userStore.fetchCartItems();
 
-        alert("Item added to cart!");
+        notifications.success("Item added to cart!");
       } catch (error) {
         console.error("Error adding to cart:", error);
+        notifications.error("Failed to add item to cart.");
       }
     },
   },

@@ -4,6 +4,7 @@ import CheckoutForm from "@/components/CheckoutForm.vue";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/main.js";
 import { useUserStore } from "@/stores/userStore";
+import { useNotifications } from "@/stores/notificationStore";
 
 export default {
   name: "CheckoutPage",
@@ -30,15 +31,16 @@ export default {
   methods: {
     async removeCartItem(itemId) {
       const userId = this.userStore.userUID;
+      const notifications = useNotifications();
 
       if (userId) {
         try {
           await deleteDoc(doc(db, "users", userId, "cart", itemId));
           this.userStore.cartItems = this.userStore.cartItems.filter((item) => item.id !== itemId);
-          alert("Item removed successfully!");
+          notifications.success("Item removed successfully!");
         } catch (error) {
           console.error("Error removing item:", error);
-          alert("Failed to remove item.");
+          notifications.error("Failed to remove item.");
         }
       }
     },
@@ -67,7 +69,7 @@ export default {
         });
       } catch (error) {
         console.error("Error updating item quantity:", error);
-        alert("Failed to update item quantity.");
+        useNotifications().error("Failed to update item quantity.");
       }
     },
     proceedToCheckout() {

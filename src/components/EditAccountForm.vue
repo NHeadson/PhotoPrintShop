@@ -1,5 +1,6 @@
 <script>
 import { useUserStore } from "@/stores/userStore";
+import { useNotifications } from "@/stores/notificationStore";
 
 export default {
   name: "EditAccountForm",
@@ -48,6 +49,7 @@ export default {
       };
     },
     async saveChanges() {
+      const notifications = useNotifications();
       try {
         const updates = {
           firstName: this.firstName,
@@ -64,10 +66,10 @@ export default {
           updates.password = this.password;
         }
         await this.userStore.updateUserProfile(updates);
-        alert("Account details updated successfully!");
+        notifications.success("Account details updated successfully!");
       } catch (error) {
         console.error("Error updating account details:", error);
-        alert("Failed to update account details.");
+        notifications.error("Failed to update account details.");
       }
     },
   },

@@ -2,6 +2,8 @@
 import { db } from "@/main.js";
 import { collection, addDoc } from "firebase/firestore";
 import { useUserStore } from "@/stores/userStore";
+import { useNotifications } from "@/stores/notificationStore";
+import { redirectAfterModal } from "@/utils/redirectAfterModal";
 
 export default {
   name: "PhotoCard",
@@ -67,8 +69,12 @@ export default {
       );
     },
     async handleAddToCart() {
+      const notifications = useNotifications();
       if (!this.isFormValid()) {
-        alert("Please fill in all required fields.");
+        notifications.warning("Please fill in all required fields.", {
+          title: "Missing Selection",
+          variant: "modal",
+        });
         return;
       }
 
@@ -76,8 +82,12 @@ export default {
       const userId = userStore.userUID;
 
       if (!userId) {
-        alert("You must be logged in to add items to the cart.");
-        this.$router.push('/account');
+        await redirectAfterModal(
+          this.$router,
+          "/account",
+          "You must be logged in to add items to the cart.",
+          { title: "Login Required" }
+        );
         return;
       }
 
@@ -92,12 +102,12 @@ export default {
         const cartRef = collection(db, "users", userId, "cart");
         const docRef = await addDoc(cartRef, cartItem);
         console.log("Cart item added with ID: ", docRef.id);
-        alert("Item added to cart successfully!");
+        notifications.success("Item added to cart successfully!");
         this.showModal = false;
         window.location.reload();
       } catch (error) {
         console.error("Failed to add item to cart:", error);
-        alert("Failed to add item to cart.");
+        notifications.error("Failed to add item to cart.");
       }
     },
   },

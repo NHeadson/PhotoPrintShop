@@ -1,11 +1,13 @@
 <script>
 import AppHeader from "@/components/AppHeader.vue";
 import AppFooter from "@/components/AppFooter.vue";
+import NotificationCenter from "@/components/NotificationCenter.vue";
 
 export default {
   components: {
     AppHeader,
     AppFooter,
+    NotificationCenter,
   },
   data() {
     return {
@@ -50,6 +52,7 @@ export default {
       </v-container>
     </v-main>
     <AppFooter/>
+    <NotificationCenter />
   </v-app>
 </template>
 
